@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepal Life Insurance - Analytics Dashboard</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #DC143C;
+            --primary-dark: #B01030;
+            --secondary: #003893;
+            --accent: #FFD700;
+            --bg: #F8F9FA;
+            --card: #FFFFFF;
+            --text: #212529;
+            --text-light: #6C757D;
+            --border: #DEE2E6;
+            --success: #28A745;
+            --warning: #FFC107;
+            --danger: #DC3545;
+            --info: #17A2B8;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1920px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .header p {
+            opacity: 0.95;
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+        
+        .header-badges {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* Navigation */
+        .nav {
+            background: var(--card);
+            box-shadow: var(--shadow);
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 96px;
+            z-index: 99;
+        }
+        
+        .nav-content {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+        }
+        
+        .nav-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+        
+        .nav-item:hover {
+            color: var(--primary);
+            background: rgba(220, 20, 60, 0.05);
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .kpi-card {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .kpi-card.success { border-left-color: var(--success); }
+        .kpi-card.warning { border-left-color: var(--warning); }
+        .kpi-card.danger { border-left-color: var(--danger); }
+        .kpi-card.info { border-left-color: var(--info); }
+        
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .kpi-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .kpi-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .kpi-icon.success { background: rgba(40, 167, 69, 0.1); color: var(--success); }
+        .kpi-icon.warning { background: rgba(255, 193, 7, 0.1); color: var(--warning); }
+        .kpi-icon.danger { background: rgba(220, 53, 69, 0.1); color: var(--danger); }
+        .kpi-icon.info { background: rgba(23, 162, 184, 0.1); color: var(--info); }
+        
+        .kpi-comparison {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .comparison-item {
+            flex: 1;
+        }
+        
+        .comparison-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        
+        .comparison-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .kpi-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .kpi-change.positive { background: rgba(40, 167, 69, 0.1); color: var(--success); }
+        .kpi-change.negative { background: rgba(220, 53, 69, 0.1); color: var(--danger); }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+        }
+        
+        /* Chart Grid */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-card {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+        
+        /* Heatmap */
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .heatmap-cell {
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .heatmap-cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .heatmap-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .heatmap-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .heatmap-detail {
+            font-size: 0.75rem;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+        
+        /* Color intensity - Nepal flag theme */
+        .heat-1 { background: #FCE4EC; color: #C62828; }
+        .heat-2 { background: #F8BBD0; color: #C62828; }
+        .heat-3 { background: #F48FB1; color: #FFFFFF; }
+        .heat-4 { background: #F06292; color: #FFFFFF; }
+        .heat-5 { background: #EC407A; color: #FFFFFF; }
+        .heat-6 { background: #E91E63; color: #FFFFFF; }
+        .heat-7 { background: #D81B60; color: #FFFFFF; }
+        .heat-8 { background: #C2185B; color: #FFFFFF; }
+        .heat-9 { background: #AD1457; color: #FFFFFF; }
+        .heat-10 { background: #880E4F; color: #FFFFFF; }
+        
+        /* Year Comparison Filter */
+        .year-filter {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: end;
+        }
+        
+        .year-select-group {
+            flex: 1;
+        }
+        
+        .year-select-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .year-select-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .year-select-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .compare-btn {
+            padding: 0.75rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .compare-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Insights Panel */
+        .insights-panel {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .insights-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .insight-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .insight-icon {
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+        
+        .insight-text {
+            flex: 1;
+        }
+        
+        .insight-text strong {
+            color: var(--primary);
+        }
+        
+        /* Comparison Metrics */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .comparison-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .comparison-metric {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .comparison-diff {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .diff-positive { color: var(--success); }
+        .diff-negative { color: var(--danger); }
+        
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .data-table thead {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .data-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .data-table tbody tr {
+            transition: background 0.2s;
+        }
+        
+        .data-table tbody tr:hover {
+            background: rgba(220, 20, 60, 0.05);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-active { background: rgba(40, 167, 69, 0.1); color: var(--success); }
+        .status-inactive { background: rgba(108, 117, 125, 0.1); color: #6C757D; }
+        .status-passive { background: rgba(255, 193, 7, 0.1); color: #D39E00; }
+        .status-high { background: rgba(40, 167, 69, 0.1); color: var(--success); }
+        .status-medium { background: rgba(255, 193, 7, 0.1); color: #D39E00; }
+        .status-low { background: rgba(220, 53, 69, 0.1); color: var(--danger); }
+        
+        .legend {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .heatmap-grid { grid-template-columns: repeat(4, 1fr); }
+            .chart-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+            .heatmap-grid { grid-template-columns: repeat(2, 1fr); }
+            .header-content { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <h1><i class="fas fa-chart-line"></i> Nepal Life Insurance Analytics</h1>
+                <p>Fiscal Year Comparison Dashboard | Beema Samiti Compliant</p>
+            </div>
+            <div class="header-badges">
+                <div class="badge"><i class="fas fa-calendar-alt"></i> FY 2081/82</div>
+                <div class="badge"><i class="fas fa-flag"></i> Nepal</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="nav">
+        <div class="nav-content">
+            <div class="nav-item active" data-page="executive"><i class="fas fa-tachometer-alt"></i> Executive</div>
+            <div class="nav-item" data-page="premium"><i class="fas fa-coins"></i> Premium Analysis</div>
+            <div class="nav-item" data-page="sales"><i class="fas fa-users"></i> Sales & Agency</div>
+            <div class="nav-item" data-page="agent"><i class="fas fa-user-tie"></i> Agent Performance</div>
+            <div class="nav-item" data-page="risk"><i class="fas fa-shield-alt"></i> Risk Management</div>
+            <div class="nav-item" data-page="claims"><i class="fas fa-file-invoice-dollar"></i> Claims & Surrender</div>
+            <div class="nav-item" data-page="investment"><i class="fas fa-chart-pie"></i> Investment & Maturity</div>
+            <div class="nav-item" data-page="ai"><i class="fas fa-brain"></i> AI Predictions</div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- ==================== EXECUTIVE VIEW ==================== -->
+        <div id="executive" class="page active">
+            <div class="section-title"><i class="fas fa-tachometer-alt"></i> Executive Dashboard - FY 2081/82</div>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card success">
+                    <div class="kpi-label">Total Premium Collection</div>
+                    <div class="kpi-value">रू 128.6 Cr</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +18.4% vs FY 80/81</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 79/80</div>
+                            <div class="comparison-value">रू 92.4 Cr</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 80/81</div>
+                            <div class="comparison-value">रू 108.6 Cr</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 81/82</div>
+                            <div class="comparison-value">रू 128.6 Cr</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 78%"></div></div>
+                    <small>78% of target (रू 165 Cr)</small>
+                </div>
+                
+                <div class="kpi-card info">
+                    <div class="kpi-label">Active Policies</div>
+                    <div class="kpi-value">245,820</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +12.5% growth</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 79/80</div>
+                            <div class="comparison-value">178,420</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 80/81</div>
+                            <div class="comparison-value">218,560</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 81/82</div>
+                            <div class="comparison-value">245,820</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Total Agents</div>
+                    <div class="kpi-value">4,895</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +847 new agents</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item">
+                            <div class="comparison-label">Active</div>
+                            <div class="comparison-value">2,847</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Passive</div>
+                            <div class="comparison-value">1,156</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Inactive</div>
+                            <div class="comparison-value">892</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card danger">
+                    <div class="kpi-label">Claim Settlement Ratio</div>
+                    <div class="kpi-value">94.8%</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +2.1% vs LY</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 79/80</div>
+                            <div class="comparison-value">91.2%</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 80/81</div>
+                            <div class="comparison-value">92.7%</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">FY 81/82</div>
+                            <div class="comparison-value">94.8%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Province Heatmap -->
+            <div class="chart-card full-width">
+                <div class="chart-title"><i class="fas fa-map-marked-alt"></i> Province Performance Heatmap - Premium (NPR Crore) with Growth %</div>
+                <div class="heatmap-grid">
+                    <div class="heatmap-cell heat-10">
+                        <div class="heatmap-label">Bagmati</div>
+                        <div class="heatmap-value">रू 45.8 Cr</div>
+                        <div class="heatmap-detail">35.6% share | +18.5%<br>79/80: रू 32.4 Cr | 80/81: रू 38.6 Cr</div>
+                    </div>
+                    <div class="heatmap-cell heat-8">
+                        <div class="heatmap-label">Lumbini</div>
+                        <div class="heatmap-value">रू 28.4 Cr</div>
+                        <div class="heatmap-detail">22.1% share | +15.2%<br>79/80: रू 20.8 Cr | 80/81: रू 24.6 Cr</div>
+                    </div>
+                    <div class="heatmap-cell heat-6">
+                        <div class="heatmap-label">Koshi</div>
+                        <div class="heatmap-value">रू 18.6 Cr</div>
+                        <div class="heatmap-detail">14.5% share | +12.8%<br>79/80: रू 14.2 Cr | 80/81: रू 16.5 Cr</div>
+                    </div>
+                    <div class="heatmap-cell heat-5">
+                        <div class="heatmap-label">Madhesh</div>
+                        <div class="heatmap-value">रू 12.8 Cr</div>
+                        <div class="heatmap-detail">10.0% share | +14.3%<br>79/80: रू 9.4 Cr | 80/81: रू 11.2 Cr</div>
+                    </div>
+                    <div class="heatmap-cell heat-4">
+                        <div class="heatmap-label">Gandaki</div>
+                        <div class="heatmap-value">रू 10.2 Cr</div>
+                        <div class="heatmap-detail">7.9% share | +11.5%<br>79/80: रू 7.8 Cr | 80/81: रू 9.2 Cr</div>
+                    </div>
+                    <div class="heatmap-cell heat-3">
+                        <div class="heatmap-label">Sudurpaschim</div>
+                        <div class="heatmap-value">रू 7.4 Cr</div>
+                        <div class="heatmap-detail">5.8% share | +9.8%<br>79/80: रू 5.6 Cr | 80/81: रू 6.7 Cr</div>
+                    </div>
+                    <div class="heatmap-cell heat-2">
+                        <div class="heatmap-label">Karnali</div>
+                        <div class="heatmap-value">रू 5.4 Cr</div>
+                        <div class="heatmap-detail">4.2% share | +7.2%<br>79/80: रू 4.2 Cr | 80/81: रू 5.0 Cr</div>
+                    </div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color heat-1"></div> Low (< रू 6 Cr)</div>
+                    <div class="legend-item"><div class="legend-color heat-5"></div> Medium (रू 10-15 Cr)</div>
+                    <div class="legend-item"><div class="legend-color heat-10"></div> High (> रू 25 Cr)</div>
+                </div>
+            </div>
+            
+            <div class="chart-grid" style="margin-top: 2rem;">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-line"></i> 3-Year Premium Trend (Monthly)</div>
+                    <div class="chart-container"><canvas id="execTrendChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-pie"></i> Payment Mode Distribution FY 81/82</div>
+                    <div class="chart-container"><canvas id="paymentChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== PREMIUM ANALYSIS ==================== -->
+        <div id="premium" class="page">
+            <div class="section-title"><i class="fas fa-coins"></i> Premium Collection Analysis - 3 Year Comparison</div>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card success">
+                    <div class="kpi-label">Total Premium FY 81/82</div>
+                    <div class="kpi-value">रू 128.6 Cr</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +18.4% vs LY</div>
+                </div>
+                <div class="kpi-card info">
+                    <div class="kpi-label">Renewal Premium</div>
+                    <div class="kpi-value">रू 86.4 Cr</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">FY 79/80</div><div class="comparison-value">रू 62.8 Cr</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 80/81</div><div class="comparison-value">रू 74.2 Cr</div></div>
+                    </div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">New Business Premium</div>
+                    <div class="kpi-value">रू 42.2 Cr</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">FY 79/80</div><div class="comparison-value">रू 29.6 Cr</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 80/81</div><div class="comparison-value">रू 34.4 Cr</div></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Renewal Collection Rate</div>
+                    <div class="kpi-value">82.4%</div>
+                    <div class="kpi-change negative"><i class="fas fa-arrow-down"></i> -1.2% vs LY (83.6%)</div>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width">
+                <div class="chart-title"><i class="fas fa-map-marked-alt"></i> Province-wise Premium Collection Heatmap (NPR Crore)</div>
+                <div class="heatmap-grid">
+                    <div class="heatmap-cell heat-10">
+                        <div class="heatmap-label">Bagmati</div>
+                        <div class="heatmap-value">रू 45.8 Cr</div>
+                        <div class="heatmap-detail">FY 79/80: रू 32.4 Cr<br>FY 80/81: रू 38.6 Cr<br>FY 81/82: रू 45.8 Cr<br><b>Growth: +41.4%</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-8">
+                        <div class="heatmap-label">Lumbini</div>
+                        <div class="heatmap-value">रू 28.4 Cr</div>
+                        <div class="heatmap-detail">FY 79/80: रू 20.8 Cr<br>FY 80/81: रू 24.6 Cr<br>FY 81/82: रू 28.4 Cr<br><b>Growth: +36.5%</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-6">
+                        <div class="heatmap-label">Koshi</div>
+                        <div class="heatmap-value">रू 18.6 Cr</div>
+                        <div class="heatmap-detail">FY 79/80: रू 14.2 Cr<br>FY 80/81: रू 16.5 Cr<br>FY 81/82: रू 18.6 Cr<br><b>Growth: +31.0%</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-5">
+                        <div class="heatmap-label">Madhesh</div>
+                        <div class="heatmap-value">रू 12.8 Cr</div>
+                        <div class="heatmap-detail">FY 79/80: रू 9.4 Cr<br>FY 80/81: रू 11.2 Cr<br>FY 81/82: रू 12.8 Cr<br><b>Growth: +36.2%</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-4">
+                        <div class="heatmap-label">Gandaki</div>
+                        <div class="heatmap-value">रू 10.2 Cr</div>
+                        <div class="heatmap-detail">FY 79/80: रू 7.8 Cr<br>FY 80/81: रू 9.2 Cr<br>FY 81/82: रू 10.2 Cr<br><b>Growth: +30.8%</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-3">
+                        <div class="heatmap-label">Sudurpaschim</div>
+                        <div class="heatmap-value">रू 7.4 Cr</div>
+                        <div class="heatmap-detail">FY 79/80: रू 5.6 Cr<br>FY 80/81: रू 6.7 Cr<br>FY 81/82: रू 7.4 Cr<br><b>Growth: +32.1%</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-2">
+                        <div class="heatmap-label">Karnali</div>
+                        <div class="heatmap-value">रू 5.4 Cr</div>
+                        <div class="heatmap-detail">FY 79/80: रू 4.2 Cr<br>FY 80/81: रू 5.0 Cr<br>FY 81/82: रू 5.4 Cr<br><b>Growth: +28.6%</b></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-grid" style="margin-top: 2rem;">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Premium by Province - 3 Year Comparison</div>
+                    <div class="chart-container"><canvas id="premiumProvinceChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-line"></i> Monthly Premium Collection - FY 81/82 vs FY 80/81</div>
+                    <div class="chart-container"><canvas id="monthlyPremiumChart"></canvas></div>
+                </div>
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-pie"></i> Payment Mode Distribution</div>
+                    <div class="chart-container"><canvas id="paymentModeChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Plan Type Premium Breakdown</div>
+                    <div class="chart-container"><canvas id="planPremiumChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== SALES & AGENCY ==================== -->
+        <div id="sales" class="page">
+            <div class="section-title"><i class="fas fa-users"></i> Sales & Agency Management</div>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card success">
+                    <div class="kpi-label">Total Agents</div>
+                    <div class="kpi-value">4,895</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">FY 79/80</div><div class="comparison-value">3,642</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 80/81</div><div class="comparison-value">4,048</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 81/82</div><div class="comparison-value">4,895</div></div>
+                    </div>
+                </div>
+                <div class="kpi-card info">
+                    <div class="kpi-label">Active Agents</div>
+                    <div class="kpi-value">2,847</div>
+                    <div class="kpi-change positive">58.2% of total</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Passive Agents</div>
+                    <div class="kpi-value">1,156</div>
+                    <div class="kpi-change negative">23.6% of total</div>
+                </div>
+                <div class="kpi-card danger">
+                    <div class="kpi-label">Inactive Agents</div>
+                    <div class="kpi-value">892</div>
+                    <div class="kpi-change negative">18.2% of total</div>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width">
+                <div class="chart-title"><i class="fas fa-map-marked-alt"></i> Agent Distribution by Province</div>
+                <div class="heatmap-grid">
+                    <div class="heatmap-cell heat-10">
+                        <div class="heatmap-label">Bagmati</div>
+                        <div class="heatmap-value">1,847</div>
+                        <div class="heatmap-detail">Active: 1,156<br>Passive: 425<br>Inactive: 266<br><b>58.2% Active</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-8">
+                        <div class="heatmap-label">Lumbini</div>
+                        <div class="heatmap-value">1,124</div>
+                        <div class="heatmap-detail">Active: 682<br>Passive: 268<br>Inactive: 174<br><b>60.7% Active</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-6">
+                        <div class="heatmap-label">Koshi</div>
+                        <div class="heatmap-value">758</div>
+                        <div class="heatmap-detail">Active: 445<br>Passive: 182<br>Inactive: 131<br><b>58.7% Active</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-5">
+                        <div class="heatmap-label">Madhesh</div>
+                        <div class="heatmap-value">524</div>
+                        <div class="heatmap-detail">Active: 298<br>Passive: 128<br>Inactive: 98<br><b>56.9% Active</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-4">
+                        <div class="heatmap-label">Gandaki</div>
+                        <div class="heatmap-value">342</div>
+                        <div class="heatmap-detail">Active: 198<br>Passive: 82<br>Inactive: 62<br><b>57.9% Active</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-3">
+                        <div class="heatmap-label">Sudurpaschim</div>
+                        <div class="heatmap-value">186</div>
+                        <div class="heatmap-detail">Active: 98<br>Passive: 48<br>Inactive: 40<br><b>52.7% Active</b></div>
+                    </div>
+                    <div class="heatmap-cell heat-2">
+                        <div class="heatmap-label">Karnali</div>
+                        <div class="heatmap-value">114</div>
+                        <div class="heatmap-detail">Active: 68<br>Passive: 23<br>Inactive: 23<br><b>59.6% Active</b></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-grid" style="margin-top: 2rem;">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-line"></i> Agent Growth by Province (YoY %)</div>
+                    <div class="chart-container"><canvas id="agentGrowthChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-pie"></i> Agent Status Distribution</div>
+                    <div class="chart-container"><canvas id="agentStatusChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== AGENT PERFORMANCE ==================== -->
+        <div id="agent" class="page">
+            <div class="section-title"><i class="fas fa-user-tie"></i> Agent Performance Analysis - FY 2081/82</div>
+            
+            <!-- Year Comparison Filter -->
+            <div class="year-filter">
+                <div class="year-select-group">
+                    <label><i class="fas fa-calendar"></i> Base Year</label>
+                    <select id="agent-base-year">
+                        <option value="79/80">FY 2079/80</option>
+                        <option value="80/81" selected>FY 2080/81</option>
+                    </select>
+                </div>
+                <div class="year-select-group">
+                    <label><i class="fas fa-calendar"></i> Comparison Year</label>
+                    <select id="agent-compare-year">
+                        <option value="80/81">FY 2080/81</option>
+                        <option value="81/82" selected>FY 2081/82</option>
+                    </select>
+                </div>
+                <button class="compare-btn" onclick="compareAgentYears()">
+                    <i class="fas fa-exchange-alt"></i> Compare & Generate Insights
+                </button>
+            </div>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card success">
+                    <div class="kpi-label">Top Performer Premium</div>
+                    <div class="kpi-value">रू 128.5 L</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +24.3% vs LY</div>
+                </div>
+                <div class="kpi-card info">
+                    <div class="kpi-label">Avg Premium/Agent</div>
+                    <div class="kpi-value">रू 4.5 L</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +12.5%</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Active Rate</div>
+                    <div class="kpi-value">58.2%</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +3.8%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">New Agents Added</div>
+                    <div class="kpi-value">847</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +21.3%</div>
+                </div>
+            </div>
+            
+            <!-- Top 20 Agents Table -->
+            <div class="chart-card full-width" style="margin-bottom: 2rem;">
+                <div class="chart-title"><i class="fas fa-trophy"></i> Top 20 Performing Agents - FY 2081/82</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Agent Name</th>
+                            <th>Province</th>
+                            <th>Agency</th>
+                            <th>Premium (रू Lakh)</th>
+                            <th>Policies</th>
+                            <th>Avg/Policy</th>
+                            <th>Growth</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>🥇 1</td><td>Ram Bahadur Thapa</td><td>Bagmati</td><td>Kathmandu Central</td><td>128.5</td><td>245</td><td>रू 52,449</td><td><span class="status-badge status-high">+24.3%</span></td></tr>
+                        <tr><td>🥈 2</td><td>Sita Sharma</td><td>Lumbini</td><td>Bhairahawa Agency</td><td>98.2</td><td>198</td><td>रू 49,596</td><td><span class="status-badge status-high">+18.7%</span></td></tr>
+                        <tr><td>🥉 3</td><td>Bishnu Prasad Poudel</td><td>Gandaki</td><td>Pokhara Branch</td><td>87.4</td><td>176</td><td>रू 49,659</td><td><span class="status-badge status-high">+15.2%</span></td></tr>
+                        <tr><td>4</td><td>Krishna Gurung</td><td>Koshi</td><td>Biratnagar Office</td><td>76.8</td><td>154</td><td>रू 49,870</td><td><span class="status-badge status-high">+12.8%</span></td></tr>
+                        <tr><td>5</td><td>Gopal Rai</td><td>Madhesh</td><td>Janakpur Agency</td><td>68.5</td><td>142</td><td>रू 48,239</td><td><span class="status-badge status-high">+11.4%</span></td></tr>
+                        <tr><td>6</td><td>Manisha Maharjan</td><td>Bagmati</td><td>Lalitpur Hub</td><td>62.3</td><td>128</td><td>रू 48,672</td><td><span class="status-badge status-medium">+10.2%</span></td></tr>
+                        <tr><td>7</td><td>Deepak Shrestha</td><td>Bagmati</td><td>Bhaktapur Agency</td><td>58.7</td><td>118</td><td>रू 49,746</td><td><span class="status-badge status-medium">+9.8%</span></td></tr>
+                        <tr><td>8</td><td>Sunita Karki</td><td>Lumbini</td><td>Butwal Office</td><td>54.2</td><td>106</td><td>रू 51,132</td><td><span class="status-badge status-medium">+8.5%</span></td></tr>
+                        <tr><td>9</td><td>Rajesh Hamal</td><td>Koshi</td><td>Dharan Branch</td><td>48.9</td><td>98</td><td>रू 49,898</td><td><span class="status-badge status-medium">+7.3%</span></td></tr>
+                        <tr><td>10</td><td>Anita Magar</td><td>Gandaki</td><td>Pokhara East</td><td>45.6</td><td>92</td><td>रू 49,565</td><td><span class="status-badge status-medium">+6.8%</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Agent Productivity by Province</div>
+                    <div class="chart-container"><canvas id="agentProductivityChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-line"></i> Agent Count Trend (3 Years)</div>
+                    <div class="chart-container"><canvas id="agentCountTrendChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== RISK MANAGEMENT ==================== -->
+        <div id="risk" class="page">
+            <div class="section-title"><i class="fas fa-shield-alt"></i> Risk Management Dashboard</div>
+            
+            <!-- Year Comparison Filter -->
+            <div class="year-filter">
+                <div class="year-select-group">
+                    <label><i class="fas fa-calendar"></i> Base Year</label>
+                    <select id="risk-base-year">
+                        <option value="79/80">FY 2079/80</option>
+                        <option value="80/81" selected>FY 2080/81</option>
+                    </select>
+                </div>
+                <div class="year-select-group">
+                    <label><i class="fas fa-calendar"></i> Comparison Year</label>
+                    <select id="risk-compare-year">
+                        <option value="80/81">FY 2080/81</option>
+                        <option value="81/82" selected>FY 2081/82</option>
+                    </select>
+                </div>
+                <button class="compare-btn" onclick="compareRiskYears()">
+                    <i class="fas fa-exchange-alt"></i> Compare & Generate Insights
+                </button>
+            </div>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card danger">
+                    <div class="kpi-label">Total Claims</div>
+                    <div class="kpi-value">1,247</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">FY 79/80</div><div class="comparison-value">982</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 80/81</div><div class="comparison-value">1,124</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 81/82</div><div class="comparison-value">1,247</div></div>
+                    </div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Surrender Policies</div>
+                    <div class="kpi-value">842</div>
+                    <div class="kpi-change negative"><i class="fas fa-arrow-up"></i> +11.1% vs LY</div>
+                </div>
+                <div class="kpi-card info">
+                    <div class="kpi-label">Lapsed Policies</div>
+                    <div class="kpi-value">2,156</div>
+                    <div class="kpi-change negative"><i class="fas fa-arrow-up"></i> 9.2% lapse rate</div>
+                </div>
+                <div class="kpi-card success">
+                    <div class="kpi-label">Policy Loans Outstanding</div>
+                    <div class="kpi-value">रू 18.5 Cr</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">FY 79/80</div><div class="comparison-value">रू 12.8 Cr</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 80/81</div><div class="comparison-value">रू 15.6 Cr</div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width">
+                <div class="chart-title"><i class="fas fa-map-marked-alt"></i> Risk Heatmap - Claims & Surrender by Province</div>
+                <div class="heatmap-grid">
+                    <div class="heatmap-cell heat-10">
+                        <div class="heatmap-label">Bagmati</div>
+                        <div class="heatmap-value">412</div>
+                        <div class="heatmap-detail">Claims: 358 | Surrender: 298<br>Lapse: 682 | Ratio: 3.2%</div>
+                    </div>
+                    <div class="heatmap-cell heat-8">
+                        <div class="heatmap-label">Lumbini</div>
+                        <div class="heatmap-value">248</div>
+                        <div class="heatmap-detail">Claims: 218 | Surrender: 178<br>Lapse: 456 | Ratio: 3.6%</div>
+                    </div>
+                    <div class="heatmap-cell heat-6">
+                        <div class="heatmap-label">Koshi</div>
+                        <div class="heatmap-value">168</div>
+                        <div class="heatmap-detail">Claims: 145 | Surrender: 124<br>Lapse: 298 | Ratio: 4.1%</div>
+                    </div>
+                    <div class="heatmap-cell heat-5">
+                        <div class="heatmap-label">Madhesh</div>
+                        <div class="heatmap-value">124</div>
+                        <div class="heatmap-detail">Claims: 98 | Surrender: 86<br>Lapse: 218 | Ratio: 4.8%</div>
+                    </div>
+                    <div class="heatmap-cell heat-4">
+                        <div class="heatmap-label">Gandaki</div>
+                        <div class="heatmap-value">96</div>
+                        <div class="heatmap-detail">Claims: 82 | Surrender: 68<br>Lapse: 168 | Ratio: 4.3%</div>
+                    </div>
+                    <div class="heatmap-cell heat-3">
+                        <div class="heatmap-label">Sudurpaschim</div>
+                        <div class="heatmap-value">68</div>
+                        <div class="heatmap-detail">Claims: 58 | Surrender: 42<br>Lapse: 124 | Ratio: 5.2%</div>
+                    </div>
+                    <div class="heatmap-cell heat-2">
+                        <div class="heatmap-label">Karnali</div>
+                        <div class="heatmap-value">48</div>
+                        <div class="heatmap-detail">Claims: 42 | Surrender: 32<br>Lapse: 98 | Ratio: 5.8%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-grid" style="margin-top: 2rem;">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Claim Settlement Ratio by Province</div>
+                    <div class="chart-container"><canvas id="claimSettlementChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-line"></i> Risk Metrics Trend (3 Years)</div>
+                    <div class="chart-container"><canvas id="riskTrendChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== CLAIMS & SURRENDER ==================== -->
+        <div id="claims" class="page">
+            <div class="section-title"><i class="fas fa-file-invoice-dollar"></i> Claims & Surrender Analysis</div>
+            
+            <!-- Year Comparison Filter -->
+            <div class="year-filter">
+                <div class="year-select-group">
+                    <label><i class="fas fa-calendar"></i> Base Year</label>
+                    <select id="claims-base-year">
+                        <option value="79/80">FY 2079/80</option>
+                        <option value="80/81" selected>FY 2080/81</option>
+                    </select>
+                </div>
+                <div class="year-select-group">
+                    <label><i class="fas fa-calendar"></i> Comparison Year</label>
+                    <select id="claims-compare-year">
+                        <option value="80/81">FY 2080/81</option>
+                        <option value="81/82" selected>FY 2081/82</option>
+                    </select>
+                </div>
+                <button class="compare-btn" onclick="compareClaimsYears()">
+                    <i class="fas fa-exchange-alt"></i> Compare & Generate Insights
+                </button>
+            </div>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card success">
+                    <div class="kpi-label">Claim Settlement Ratio</div>
+                    <div class="kpi-value">94.8%</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +2.1% vs LY</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">FY 79/80</div><div class="comparison-value">91.2%</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 80/81</div><div class="comparison-value">92.7%</div></div>
+                    </div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Surrender Ratio</div>
+                    <div class="kpi-value">3.8%</div>
+                    <div class="kpi-change negative"><i class="fas fa-arrow-up"></i> +0.4% vs LY</div>
+                </div>
+                <div class="kpi-card info">
+                    <div class="kpi-label">Claims Settled</div>
+                    <div class="kpi-value">1,182</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">FY 79/80</div><div class="comparison-value">896</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 80/81</div><div class="comparison-value">1,042</div></div>
+                    </div>
+                </div>
+                <div class="kpi-card danger">
+                    <div class="kpi-label">Claims Pending</div>
+                    <div class="kpi-value">65</div>
+                    <div class="kpi-change negative"><i class="fas fa-clock"></i> Avg 18 days</div>
+                </div>
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Claims by Province - 3 Year Comparison</div>
+                    <div class="chart-container"><canvas id="claimsProvinceChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-line"></i> Surrender vs New Policies Trend</div>
+                    <div class="chart-container"><canvas id="surrenderVsNewChart"></canvas></div>
+                </div>
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-pie"></i> Claim Type Distribution</div>
+                    <div class="chart-container"><canvas id="claimTypeChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Settlement Time by Province (Days)</div>
+                    <div class="chart-container"><canvas id="settlementTimeChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== INVESTMENT & MATURITY ==================== -->
+        <div id="investment" class="page">
+            <div class="section-title"><i class="fas fa-chart-pie"></i> Investment Portfolio & Maturity Tracking</div>
+            
+            <!-- Year Comparison Filter -->
+            <div class="year-filter">
+                <div class="year-select-group">
+                    <label><i class="fas fa-calendar"></i> Base Year</label>
+                    <select id="invest-base-year">
+                        <option value="79/80">FY 2079/80</option>
+                        <option value="80/81" selected>FY 2080/81</option>
+                    </select>
+                </div>
+                <div class="year-select-group">
+                    <label><i class="fas fa-calendar"></i> Comparison Year</label>
+                    <select id="invest-compare-year">
+                        <option value="80/81">FY 2080/81</option>
+                        <option value="81/82" selected>FY 2081/82</option>
+                    </select>
+                </div>
+                <button class="compare-btn" onclick="compareInvestYears()">
+                    <i class="fas fa-exchange-alt"></i> Compare & Generate Insights
+                </button>
+            </div>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card success">
+                    <div class="kpi-label">Total Investment Portfolio</div>
+                    <div class="kpi-value">रू 218.4 Cr</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +15.7% vs LY</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">FY 79/80</div><div class="comparison-value">रू 158.2 Cr</div></div>
+                        <div class="comparison-item"><div class="comparison-label">FY 80/81</div><div class="comparison-value">रू 188.6 Cr</div></div>
+                    </div>
+                </div>
+                <div class="kpi-card info">
+                    <div class="kpi-label">ROI (Return on Investment)</div>
+                    <div class="kpi-value">15.7%</div>
+                    <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +1.8% vs LY</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Maturing Policies (Next 12M)</div>
+                    <div class="kpi-value">18,420</div>
+                    <div class="kpi-change negative"><i class="fas fa-arrow-up"></i> Payout: रू 42.8 Cr</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">FD Investment</div>
+                    <div class="kpi-value">रू 68.5 Cr</div>
+                    <div class="kpi-comparison">
+                        <div class="comparison-item"><div class="comparison-label">Avg Interest</div><div class="comparison-value">8.2%</div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width">
+                <div class="chart-title"><i class="fas fa-map-marked-alt"></i> Investment Distribution by Province (NPR Crore)</div>
+                <div class="heatmap-grid">
+                    <div class="heatmap-cell heat-10">
+                        <div class="heatmap-label">Bagmati</div>
+                        <div class="heatmap-value">रू 78.2 Cr</div>
+                        <div class="heatmap-detail">35.8% of portfolio<br>Maturing: रू 15.4 Cr<br>ROI: 16.2%</div>
+                    </div>
+                    <div class="heatmap-cell heat-8">
+                        <div class="heatmap-label">Lumbini</div>
+                        <div class="heatmap-value">रू 48.6 Cr</div>
+                        <div class="heatmap-detail">22.3% of portfolio<br>Maturing: रू 9.6 Cr<br>ROI: 15.8%</div>
+                    </div>
+                    <div class="heatmap-cell heat-6">
+                        <div class="heatmap-label">Koshi</div>
+                        <div class="heatmap-value">रू 31.8 Cr</div>
+                        <div class="heatmap-detail">14.6% of portfolio<br>Maturing: रू 6.2 Cr<br>ROI: 15.4%</div>
+                    </div>
+                    <div class="heatmap-cell heat-5">
+                        <div class="heatmap-label">Madhesh</div>
+                        <div class="heatmap-value">रू 21.8 Cr</div>
+                        <div class="heatmap-detail">10.0% of portfolio<br>Maturing: रू 4.3 Cr<br>ROI: 15.1%</div>
+                    </div>
+                    <div class="heatmap-cell heat-4">
+                        <div class="heatmap-label">Gandaki</div>
+                        <div class="heatmap-value">रू 17.4 Cr</div>
+                        <div class="heatmap-detail">8.0% of portfolio<br>Maturing: रू 3.4 Cr<br>ROI: 15.6%</div>
+                    </div>
+                    <div class="heatmap-cell heat-3">
+                        <div class="heatmap-label">Sudurpaschim</div>
+                        <div class="heatmap-value">रू 12.6 Cr</div>
+                        <div class="heatmap-detail">5.8% of portfolio<br>Maturing: रू 2.5 Cr<br>ROI: 14.8%</div>
+                    </div>
+                    <div class="heatmap-cell heat-2">
+                        <div class="heatmap-label">Karnali</div>
+                        <div class="heatmap-value">रू 8.0 Cr</div>
+                        <div class="heatmap-detail">3.7% of portfolio<br>Maturing: रू 1.6 Cr<br>ROI: 14.2%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-grid" style="margin-top: 2rem;">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-pie"></i> Investment Portfolio Breakdown</div>
+                    <div class="chart-container"><canvas id="investBreakdownChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-line"></i> Portfolio Growth (3 Years)</div>
+                    <div class="chart-container"><canvas id="investGrowthChart"></canvas></div>
+                </div>
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Maturity Schedule (Next 12 Months)</div>
+                    <div class="chart-container"><canvas id="maturityScheduleChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> FD vs Other Investments by Province</div>
+                    <div class="chart-container"><canvas id="fdInvestmentChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== AI PREDICTIONS ==================== -->
+        <div id="ai" class="page">
+            <div class="section-title"><i class="fas fa-brain"></i> AI/ML Predictive Analytics Dashboard</div>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="kpi-label" style="color: rgba(255,255,255,0.9);"><i class="fas fa-exclamation-triangle"></i> High Claim Risk Policies</div>
+                    <div class="kpi-value" style="color: white;">342</div>
+                    <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(40, 167, 69, 0.3); border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem;">
+                        <i class="fas fa-check-circle"></i> Model Accuracy: 94.2%
+                    </div>
+                </div>
+                
+                <div class="kpi-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <div class="kpi-label" style="color: rgba(255,255,255,0.9);"><i class="fas fa-times-circle"></i> Surrender Risk Policies</div>
+                    <div class="kpi-value" style="color: white;">186</div>
+                    <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(255, 193, 7, 0.3); border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem;">
+                        <i class="fas fa-check-circle"></i> Model Accuracy: 87.6%
+                    </div>
+                </div>
+                
+                <div class="kpi-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                    <div class="kpi-label" style="color: rgba(255,255,255,0.9);"><i class="fas fa-chart-line"></i> Top Growth Potential Agents</div>
+                    <div class="kpi-value" style="color: white;">128</div>
+                    <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(40, 167, 69, 0.3); border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem;">
+                        <i class="fas fa-check-circle"></i> Model Accuracy: 91.3%
+                    </div>
+                </div>
+                
+                <div class="kpi-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white;">
+                    <div class="kpi-label" style="color: rgba(255,255,255,0.9);"><i class="fas fa-sync-alt"></i> Predicted Renewal Rate</div>
+                    <div class="kpi-value" style="color: white;">84.2%</div>
+                    <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(40, 167, 69, 0.3); border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem;">
+                        <i class="fas fa-check-circle"></i> Model Accuracy: 92.8%
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width" style="margin-bottom: 2rem;">
+                <div class="chart-title"><i class="fas fa-brain"></i> AI Feature 1: Claim Probability Prediction - Top Risk Policies</div>
+                <p style="color: var(--text-light); margin-bottom: 1rem;">Model: Random Forest Classifier | Trained on 245,820 policies | 15 Features | Accuracy: 94.2%</p>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Policy ID</th><th>Plan Type</th><th>Province</th><th>Premium (रू)</th><th>Policy Age</th><th>Claim Probability</th><th>Risk Level</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>PL-2081-001</td><td>Whole Life</td><td>Bagmati</td><td>45,000</td><td>8 years</td><td>87.3%</td><td><span class="status-badge status-high">High</span></td></tr>
+                        <tr><td>PL-2081-045</td><td>Endowment</td><td>Lumbini</td><td>38,500</td><td>12 years</td><td>82.1%</td><td><span class="status-badge status-high">High</span></td></tr>
+                        <tr><td>PL-2081-128</td><td>Term</td><td>Koshi</td><td>28,000</td><td>15 years</td><td>76.8%</td><td><span class="status-badge status-medium">Medium</span></td></tr>
+                        <tr><td>PL-2081-256</td><td>Money Back</td><td>Madhesh</td><td>52,000</td><td>6 years</td><td>68.4%</td><td><span class="status-badge status-medium">Medium</span></td></tr>
+                        <tr><td>PL-2081-389</td><td>Endowment</td><td>Gandaki</td><td>32,500</td><td>10 years</td><td>62.2%</td><td><span class="status-badge status-low">Low</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> AI Feature 2: Surrender Probability by Province</div>
+                    <div class="chart-container"><canvas id="surrenderPredictionChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> AI Feature 3: Agent Business Growth Prediction</div>
+                    <div class="chart-container"><canvas id="agentBusinessPredictionChart"></canvas></div>
+                </div>
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> AI Feature 4: Renewal Policy Forecast (Next 12 Months)</div>
+                    <div class="chart-container"><canvas id="renewalPredictionChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> AI Feature 5: High-Potential Agents by Province</div>
+                    <div class="chart-container"><canvas id="potentialAgentsChart"></canvas></div>
+                </div>
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> AI Feature 6: Premium Collection Pattern Analysis</div>
+                    <div class="chart-container"><canvas id="premiumPatternChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> AI Feature 7: Investment Portfolio Optimization</div>
+                    <div class="chart-container"><canvas id="investmentAnalysisChart"></canvas></div>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width" style="margin-top: 2rem;">
+                <div class="chart-title"><i class="fas fa-chart-line"></i> AI/ML Model Performance Summary</div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>AI Model</th><th>Algorithm</th><th>Training Data</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1 Score</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Claim Prediction</td><td>Random Forest</td><td>245,820 policies</td><td>94.2%</td><td>93.8%</td><td>94.5%</td><td>94.1%</td><td><span class="status-badge status-active">Production</span></td></tr>
+                        <tr><td>Surrender Prediction</td><td>XGBoost</td><td>186,420 policies</td><td>87.6%</td><td>86.2%</td><td>88.4%</td><td>87.3%</td><td><span class="status-badge status-active">Production</span></td></tr>
+                        <tr><td>Agent Business</td><td>Gradient Boosting</td><td>4,895 agents</td><td>91.3%</td><td>90.8%</td><td>91.6%</td><td>91.2%</td><td><span class="status-badge status-active">Production</span></td></tr>
+                        <tr><td>Renewal Forecast</td><td>ARIMA + LSTM</td><td>36 months data</td><td>92.8%</td><td>92.1%</td><td>93.2%</td><td>92.6%</td><td><span class="status-badge status-active">Production</span></td></tr>
+                        <tr><td>Agent Potential</td><td>K-Means + RF</td><td>2,847 active agents</td><td>89.4%</td><td>88.6%</td><td>89.8%</td><td>89.2%</td><td><span class="status-badge status-active">Production</span></td></tr>
+                        <tr><td>Premium Patterns</td><td>Time Series STL</td><td>36 months transactions</td><td>95.2%</td><td>94.8%</td><td>95.4%</td><td>95.1%</td><td><span class="status-badge status-active">Production</span></td></tr>
+                        <tr><td>Investment Opt.</td><td>Portfolio Theory ML</td><td>रू 218.4 Cr portfolio</td><td>91.6%</td><td>90.8%</td><td>91.9%</td><td>91.3%</td><td><span class="status-badge status-active">Production</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Interactive AI Prediction Tools -->
+            <div class="section-title" style="margin-top: 3rem;"><i class="fas fa-magic"></i> Interactive AI Prediction Tools - Test Now!</div>
+            
+            <div class="chart-grid">
+                <!-- Claim Probability Predictor -->
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> 🔮 Predict Claim Probability</div>
+                    <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">Enter policy details to predict claim likelihood</p>
+                    
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Plan Type</label>
+                            <select id="claim-plan-type" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                                <option value="whole-life">Whole Life</option>
+                                <option value="endowment">Endowment</option>
+                                <option value="term">Term Insurance</option>
+                                <option value="money-back">Money Back</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Premium Amount (रू)</label>
+                            <input type="number" id="claim-premium" placeholder="e.g., 45000" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Policy Age (Years)</label>
+                            <input type="number" id="claim-age" placeholder="e.g., 8" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Province</label>
+                            <select id="claim-province" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                                <option value="bagmati">Bagmati</option>
+                                <option value="lumbini">Lumbini</option>
+                                <option value="koshi">Koshi</option>
+                                <option value="madhesh">Madhesh</option>
+                                <option value="gandaki">Gandaki</option>
+                            </select>
+                        </div>
+                        <button onclick="predictClaim()" style="padding: 1rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem;">
+                            <i class="fas fa-magic"></i> Predict Claim Probability
+                        </button>
+                    </div>
+                    
+                    <div id="claim-result" style="margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 8px; display: none;">
+                        <div style="font-size: 2rem; font-weight: 700; color: #DC143C; margin-bottom: 0.5rem;" id="claim-probability"></div>
+                        <div style="font-size: 0.9rem; color: var(--text-light);" id="claim-risk-level"></div>
+                        <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text);" id="claim-recommendation"></div>
+                    </div>
+                </div>
+                
+                <!-- Surrender Risk Predictor -->
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> 🔮 Predict Surrender Risk</div>
+                    <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">Check if a policy is likely to be surrendered</p>
+                    
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Payment Delay (Days)</label>
+                            <input type="number" id="surrender-delay" placeholder="e.g., 15" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Policy Age (Years)</label>
+                            <input type="number" id="surrender-age" placeholder="e.g., 3" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Missed Payments (Last Year)</label>
+                            <input type="number" id="surrender-missed" placeholder="e.g., 2" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Premium Amount (रू)</label>
+                            <input type="number" id="surrender-premium" placeholder="e.g., 35000" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <button onclick="predictSurrender()" style="padding: 1rem; background: linear-gradient(135deg, #f093fb, #f5576c); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem;">
+                            <i class="fas fa-magic"></i> Predict Surrender Risk
+                        </button>
+                    </div>
+                    
+                    <div id="surrender-result" style="margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 8px; display: none;">
+                        <div style="font-size: 2rem; font-weight: 700; color: #DC143C; margin-bottom: 0.5rem;" id="surrender-probability"></div>
+                        <div style="font-size: 0.9rem; color: var(--text-light);" id="surrender-risk-level"></div>
+                        <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text);" id="surrender-recommendation"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-grid">
+                <!-- Agent Growth Predictor -->
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> 🔮 Predict Agent Growth Potential</div>
+                    <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">Identify high-potential agents for retention</p>
+                    
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Policies Sold (Last Year)</label>
+                            <input type="number" id="agent-policies" placeholder="e.g., 45" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Premium Collected (रू Lakh)</label>
+                            <input type="number" id="agent-premium" placeholder="e.g., 18.5" step="0.1" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Active Months (Last Year)</label>
+                            <input type="number" id="agent-months" placeholder="e.g., 10" max="12" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Renewal Rate (%)</label>
+                            <input type="number" id="agent-renewal" placeholder="e.g., 78" max="100" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <button onclick="predictAgentGrowth()" style="padding: 1rem; background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem;">
+                            <i class="fas fa-magic"></i> Predict Growth Potential
+                        </button>
+                    </div>
+                    
+                    <div id="agent-result" style="margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 8px; display: none;">
+                        <div style="font-size: 2rem; font-weight: 700; color: #4facfe; margin-bottom: 0.5rem;" id="agent-score"></div>
+                        <div style="font-size: 0.9rem; color: var(--text-light);" id="agent-level"></div>
+                        <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text);" id="agent-recommendation"></div>
+                    </div>
+                </div>
+                
+                <!-- Renewal Predictor -->
+                <div class="chart-card">
+                    <div class="chart-title"><i class="fas fa-brain"></i> 🔮 Predict Policy Renewal</div>
+                    <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">Will this policy renew next year?</p>
+                    
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Consecutive Years Renewed</label>
+                            <input type="number" id="renewal-years" placeholder="e.g., 5" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Last Payment Delay (Days)</label>
+                            <input type="number" id="renewal-delay" placeholder="e.g., 8" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Claim History (Yes/No)</label>
+                            <select id="renewal-claim" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                                <option value="no">No Claims</option>
+                                <option value="yes">Has Claims</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Policy Type</label>
+                            <select id="renewal-type" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px;">
+                                <option value="endowment">Endowment</option>
+                                <option value="term">Term</option>
+                                <option value="whole-life">Whole Life</option>
+                                <option value="money-back">Money Back</option>
+                            </select>
+                        </div>
+                        <button onclick="predictRenewal()" style="padding: 1rem; background: linear-gradient(135deg, #43e97b, #38f9d7); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem;">
+                            <i class="fas fa-magic"></i> Predict Renewal Likelihood
+                        </button>
+                    </div>
+                    
+                    <div id="renewal-result" style="margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 8px; display: none;">
+                        <div style="font-size: 2rem; font-weight: 700; color: #43e97b; margin-bottom: 0.5rem;" id="renewal-probability"></div>
+                        <div style="font-size: 0.9rem; color: var(--text-light);" id="renewal-level"></div>
+                        <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text);" id="renewal-recommendation"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById(item.dataset.page).classList.add('active');
+            });
+        });
+        
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        
+        // Executive Trend Chart
+        new Chart(document.getElementById('execTrendChart'), {
+            type: 'line',
+            data: {
+                labels: ['Shrawan', 'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 'Poush', 'Magh', 'Falgun', 'Chaitra', 'Baishakh', 'Jestha', 'Ashadh'],
+                datasets: [
+                    {
+                        label: 'FY 79/80',
+                        data: [6.2, 6.8, 7.5, 8.2, 8.5, 7.8, 8.1, 8.6, 9.2, 7.4, 7.1, 6.5],
+                        borderColor: '#FFC107',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'FY 80/81',
+                        data: [7.4, 8.1, 8.8, 9.5, 9.8, 8.9, 9.2, 9.8, 10.4, 8.6, 8.2, 7.5],
+                        borderColor: '#003893',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'FY 81/82',
+                        data: [8.2, 9.5, 11.8, 12.4, 13.2, 10.8, 11.5, 12.8, 13.5, 10.2, 9.8, 8.5],
+                        borderColor: '#DC143C',
+                        backgroundColor: 'rgba(220, 20, 60, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Payment Chart
+        new Chart(document.getElementById('paymentChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Cash', 'Bank Transfer', 'Digital Wallet', 'Cheque'],
+                datasets: [{
+                    data: [42, 35, 18, 5],
+                    backgroundColor: ['#DC143C', '#003893', '#FFD700', '#28A745']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Premium Province Comparison
+        new Chart(document.getElementById('premiumProvinceChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [
+                    { label: 'FY 79/80', data: [32.4, 20.8, 14.2, 9.4, 7.8, 5.6, 4.2], backgroundColor: '#FFC107' },
+                    { label: 'FY 80/81', data: [38.6, 24.6, 16.5, 11.2, 9.2, 6.7, 5.0], backgroundColor: '#003893' },
+                    { label: 'FY 81/82', data: [45.8, 28.4, 18.6, 12.8, 10.2, 7.4, 5.4], backgroundColor: '#DC143C' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Monthly Premium
+        new Chart(document.getElementById('monthlyPremiumChart'), {
+            type: 'line',
+            data: {
+                labels: ['Shrawan', 'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 'Poush', 'Magh', 'Falgun', 'Chaitra', 'Baishakh', 'Jestha', 'Ashadh'],
+                datasets: [
+                    { label: 'FY 80/81', data: [7.4, 8.1, 8.8, 9.5, 9.8, 8.9, 9.2, 9.8, 10.4, 8.6, 8.2, 7.5], borderColor: '#003893', tension: 0.4 },
+                    { label: 'FY 81/82', data: [8.2, 9.5, 11.8, 12.4, 13.2, 10.8, 11.5, 12.8, 13.5, 10.2, 9.8, 8.5], borderColor: '#DC143C', tension: 0.4 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Payment Mode
+        new Chart(document.getElementById('paymentModeChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Cash', 'Bank Transfer', 'Digital Wallet', 'Cheque'],
+                datasets: [{ data: [42, 35, 18, 5], backgroundColor: ['#DC143C', '#003893', '#FFD700', '#28A745'] }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Plan Premium
+        new Chart(document.getElementById('planPremiumChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Endowment', 'Term', 'Whole Life', 'Money Back', 'ULIP', 'Child', 'Pension'],
+                datasets: [{ label: 'Premium (Cr)', data: [48.5, 28.4, 22.6, 15.8, 8.2, 3.4, 1.7], backgroundColor: '#DC143C' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y' }
+        });
+        
+        // Agent Productivity
+        new Chart(document.getElementById('agentProductivityChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [{
+                    label: 'Avg Premium per Active Agent (रू Lakh)',
+                    data: [6.8, 5.9, 5.4, 5.1, 5.6, 4.8, 4.5],
+                    backgroundColor: '#DC143C'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Agent Count Trend
+        new Chart(document.getElementById('agentCountTrendChart'), {
+            type: 'line',
+            data: {
+                labels: ['FY 79/80', 'FY 80/81', 'FY 81/82'],
+                datasets: [
+                    { label: 'Active', data: [1982, 2424, 2847], borderColor: '#28A745', tension: 0.4 },
+                    { label: 'Passive', data: [948, 1086, 1156], borderColor: '#FFC107', tension: 0.4 },
+                    { label: 'Inactive', data: [712, 538, 892], borderColor: '#DC3545', tension: 0.4 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Claim Settlement
+        new Chart(document.getElementById('claimSettlementChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [{
+                    label: 'Settlement Ratio (%)',
+                    data: [95.2, 94.8, 93.5, 92.8, 94.1, 91.2, 89.5],
+                    backgroundColor: '#28A745'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Risk Trend
+        new Chart(document.getElementById('riskTrendChart'), {
+            type: 'line',
+            data: {
+                labels: ['FY 79/80', 'FY 80/81', 'FY 81/82'],
+                datasets: [
+                    { label: 'Claims', data: [982, 1124, 1247], borderColor: '#DC3545', tension: 0.4 },
+                    { label: 'Surrender', data: [642, 758, 842], borderColor: '#FFC107', tension: 0.4 },
+                    { label: 'Lapsed', data: [1682, 1948, 2156], borderColor: '#003893', tension: 0.4 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Claims by Province
+        new Chart(document.getElementById('claimsProvinceChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [
+                    { label: 'FY 79/80', data: [268, 178, 124, 86, 68, 48, 32], backgroundColor: '#FFC107' },
+                    { label: 'FY 80/81', data: [312, 196, 136, 92, 76, 54, 38], backgroundColor: '#003893' },
+                    { label: 'FY 81/82', data: [358, 218, 145, 98, 82, 58, 42], backgroundColor: '#DC143C' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Surrender vs New
+        new Chart(document.getElementById('surrenderVsNewChart'), {
+            type: 'line',
+            data: {
+                labels: ['FY 79/80', 'FY 80/81', 'FY 81/82'],
+                datasets: [
+                    { label: 'New Policies', data: [38420, 42150, 48230], borderColor: '#28A745', tension: 0.4 },
+                    { label: 'Surrender', data: [642, 758, 842], borderColor: '#DC3545', tension: 0.4 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Claim Type
+        new Chart(document.getElementById('claimTypeChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Death Claim', 'Maturity Claim', 'Surrender', 'Policy Loan'],
+                datasets: [{
+                    data: [482, 428, 842, 368],
+                    backgroundColor: ['#DC3545', '#28A745', '#FFC107', '#003893']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Settlement Time
+        new Chart(document.getElementById('settlementTimeChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [{
+                    label: 'Avg Days to Settlement',
+                    data: [14, 16, 18, 19, 17, 21, 24],
+                    backgroundColor: '#003893'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Investment Breakdown
+        new Chart(document.getElementById('investBreakdownChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Government Securities', 'Fixed Deposits', 'Corporate Bonds', 'Equity', 'Real Estate'],
+                datasets: [{
+                    data: [148.5, 68.5, 32.4, 18.6, 12.8],
+                    backgroundColor: ['#DC143C', '#003893', '#FFD700', '#28A745', '#17A2B8']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Investment Growth
+        new Chart(document.getElementById('investGrowthChart'), {
+            type: 'line',
+            data: {
+                labels: ['FY 79/80', 'FY 80/81', 'FY 81/82'],
+                datasets: [
+                    { label: 'Portfolio (Cr)', data: [158.2, 188.6, 218.4], borderColor: '#DC143C', tension: 0.4 },
+                    { label: 'ROI (%)', data: [13.2, 13.9, 15.7], borderColor: '#28A745', tension: 0.4 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Maturity Schedule
+        new Chart(document.getElementById('maturityScheduleChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Month 1-3', 'Month 4-6', 'Month 7-9', 'Month 10-12'],
+                datasets: [
+                    { label: 'Policies', data: [4280, 4850, 5120, 4170], backgroundColor: '#003893' },
+                    { label: 'Payout (Cr)', data: [9.8, 11.2, 11.8, 10.0], backgroundColor: '#DC143C' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // FD Investment
+        new Chart(document.getElementById('fdInvestmentChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [
+                    { label: 'FD (Cr)', data: [24.6, 15.2, 9.8, 6.8, 5.4, 3.9, 2.8], backgroundColor: '#003893' },
+                    { label: 'Other (Cr)', data: [53.6, 33.4, 22.0, 15.0, 12.0, 8.7, 5.2], backgroundColor: '#DC143C' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Year Comparison Functions
+        function compareAgentYears() {
+            const baseYear = document.getElementById('agent-base-year').value;
+            const compareYear = document.getElementById('agent-compare-year').value;
+            alert(`📊 Agent Performance Comparison:\n\nBase Year: FY 20${baseYear}\nCompare Year: FY 20${compareYear}\n\n✅ Insights will be calculated based on selected years\n📈 Showing differences in premium, policies, and agent count`);
+        }
+        
+        function compareRiskYears() {
+            const baseYear = document.getElementById('risk-base-year').value;
+            const compareYear = document.getElementById('risk-compare-year').value;
+            alert(`⚠️ Risk Analysis Comparison:\n\nBase Year: FY 20${baseYear}\nCompare Year: FY 20${compareYear}\n\n✅ Claims, surrender, and lapse trends analyzed\n📊 Risk ratio changes highlighted`);
+        }
+        
+        function compareClaimsYears() {
+            const baseYear = document.getElementById('claims-base-year').value;
+            const compareYear = document.getElementById('claims-compare-year').value;
+            alert(`💰 Claims & Surrender Comparison:\n\nBase Year: FY 20${baseYear}\nCompare Year: FY 20${compareYear}\n\n✅ Settlement ratio improvement tracked\n📉 Surrender trend analysis complete`);
+        }
+        
+        function compareInvestYears() {
+            const baseYear = document.getElementById('invest-base-year').value;
+            const compareYear = document.getElementById('invest-compare-year').value;
+            alert(`💼 Investment Portfolio Comparison:\n\nBase Year: FY 20${baseYear}\nCompare Year: FY 20${compareYear}\n\n✅ ROI changes analyzed\n📈 Portfolio growth tracked\n💵 Maturity obligations compared`);
+        }
+        
+        // ==================== AI/ML CHARTS ====================
+        
+        // AI Feature 2: Surrender Probability
+        new Chart(document.getElementById('surrenderPredictionChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [{
+                    label: 'Surrender Probability (%)',
+                    data: [3.2, 3.6, 4.1, 4.8, 4.3, 5.2, 5.8],
+                    backgroundColor: ['#28A745', '#28A745', '#FFC107', '#FFC107', '#FFC107', '#DC3545', '#DC3545']
+                }]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
+            }
+        });
+        
+        // AI Feature 3: Agent Business Prediction
+        new Chart(document.getElementById('agentBusinessPredictionChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [{
+                    label: 'High-Potential Agents',
+                    data: [52, 34, 22, 14, 8, 5, 3],
+                    backgroundColor: '#667eea'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // AI Feature 4: Renewal Forecast
+        new Chart(document.getElementById('renewalPredictionChart'), {
+            type: 'line',
+            data: {
+                labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'],
+                datasets: [
+                    {
+                        label: 'Predicted Renewal Rate (%)',
+                        data: [83.2, 83.5, 83.8, 84.1, 84.3, 84.5, 84.2, 84.6, 84.8, 84.4, 84.2, 84.2],
+                        borderColor: '#43e97b',
+                        backgroundColor: 'rgba(67, 233, 123, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Actual (Current FY)',
+                        data: [81.8, 82.1, 82.3, 82.5, 82.4, 82.6, 82.4, 82.8, 82.6, 82.4, 82.4, 82.4],
+                        borderColor: '#DC143C',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // AI Feature 5: Potential Agents
+        new Chart(document.getElementById('potentialAgentsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Bagmati', 'Lumbini', 'Koshi', 'Madhesh', 'Gandaki', 'Sudurpaschim', 'Karnali'],
+                datasets: [{
+                    label: 'Growth Potential Score',
+                    data: [92.4, 88.7, 84.2, 81.6, 78.9, 75.3, 72.8],
+                    backgroundColor: '#4facfe'
+                }]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                indexAxis: 'y'
+            }
+        });
+        
+        // AI Feature 6: Premium Patterns
+        new Chart(document.getElementById('premiumPatternChart'), {
+            type: 'line',
+            data: {
+                labels: ['Shrawan', 'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 'Poush', 'Magh', 'Falgun', 'Chaitra', 'Baishakh', 'Jestha', 'Ashadh'],
+                datasets: [
+                    {
+                        label: 'Actual Premium (Cr)',
+                        data: [8.2, 9.5, 11.8, 12.4, 13.2, 10.8, 11.5, 12.8, 13.5, 10.2, 9.8, 8.5],
+                        borderColor: '#DC143C',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'AI Trend',
+                        data: [8.5, 9.2, 11.5, 12.1, 12.8, 11.2, 11.8, 12.5, 13.2, 10.5, 9.6, 8.8],
+                        borderColor: '#667eea',
+                        borderDash: [5, 5],
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // AI Feature 7: Investment Analysis
+        new Chart(document.getElementById('investmentAnalysisChart'), {
+            type: 'radar',
+            data: {
+                labels: ['ROI', 'Risk', 'Liquidity', 'Diversification', 'Stability', 'Growth'],
+                datasets: [
+                    {
+                        label: 'Current Portfolio',
+                        data: [85, 72, 78, 82, 88, 76],
+                        borderColor: '#DC143C',
+                        backgroundColor: 'rgba(220, 20, 60, 0.2)'
+                    },
+                    {
+                        label: 'AI Optimized',
+                        data: [92, 78, 82, 88, 86, 85],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)'
+                    }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // ==================== INTERACTIVE AI PREDICTION FUNCTIONS ====================
+        
+        // Predict Claim Probability
+        function predictClaim() {
+            const planType = document.getElementById('claim-plan-type').value;
+            const premium = parseFloat(document.getElementById('claim-premium').value);
+            const age = parseFloat(document.getElementById('claim-age').value);
+            const province = document.getElementById('claim-province').value;
+            
+            if (!premium || !age) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Simulated ML prediction logic
+            let probability = 45;
+            
+            // Plan type factor
+            const planFactors = {'whole-life': 1.3, 'endowment': 1.1, 'term': 0.9, 'money-back': 1.0};
+            probability *= planFactors[planType] || 1;
+            
+            // Premium factor (higher premium = slightly higher claim probability)
+            probability += (premium / 50000) * 10;
+            
+            // Age factor (older policies = higher probability)
+            probability += age * 2.5;
+            
+            // Province factor
+            const provinceFactors = {'bagmati': 0.95, 'lumbini': 1.0, 'koshi': 1.05, 'madhesh': 1.08, 'gandaki': 1.02};
+            probability *= provinceFactors[province] || 1;
+            
+            // Cap at 95%
+            probability = Math.min(probability, 95);
+            
+            // Display result
+            const resultDiv = document.getElementById('claim-result');
+            const probDiv = document.getElementById('claim-probability');
+            const riskDiv = document.getElementById('claim-risk-level');
+            const recDiv = document.getElementById('claim-recommendation');
+            
+            resultDiv.style.display = 'block';
+            probDiv.textContent = probability.toFixed(1) + '% Claim Probability';
+            
+            if (probability > 75) {
+                riskDiv.innerHTML = '<span class="status-badge status-high">HIGH RISK</span>';
+                recDiv.innerHTML = '<strong>⚠️ Recommendation:</strong> Increase reserves, conduct health review, consider reinsurance';
+            } else if (probability > 50) {
+                riskDiv.innerHTML = '<span class="status-badge status-medium">MEDIUM RISK</span>';
+                recDiv.innerHTML = '<strong>📊 Recommendation:</strong> Monitor closely, maintain standard reserves';
+            } else {
+                riskDiv.innerHTML = '<span class="status-badge status-low">LOW RISK</span>';
+                recDiv.innerHTML = '<strong>✅ Recommendation:</strong> Standard monitoring, low priority';
+            }
+        }
+        
+        // Predict Surrender Risk
+        function predictSurrender() {
+            const delay = parseFloat(document.getElementById('surrender-delay').value);
+            const age = parseFloat(document.getElementById('surrender-age').value);
+            const missed = parseFloat(document.getElementById('surrender-missed').value);
+            const premium = parseFloat(document.getElementById('surrender-premium').value);
+            
+            if (!delay || !age || !missed || !premium) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            let probability = 15;
+            
+            // Delay factor (major impact)
+            if (delay > 30) probability += 35;
+            else if (delay > 15) probability += 20;
+            else probability += delay * 0.8;
+            
+            // Age factor (2-4 years = highest risk)
+            if (age >= 2 && age <= 4) probability += 25;
+            else if (age < 2) probability += 15;
+            else probability += 10;
+            
+            // Missed payments
+            probability += missed * 8;
+            
+            // Premium affordability
+            if (premium > 50000) probability += 10;
+            
+            probability = Math.min(probability, 95);
+            
+            const resultDiv = document.getElementById('surrender-result');
+            const probDiv = document.getElementById('surrender-probability');
+            const riskDiv = document.getElementById('surrender-risk-level');
+            const recDiv = document.getElementById('surrender-recommendation');
+            
+            resultDiv.style.display = 'block';
+            probDiv.textContent = probability.toFixed(1) + '% Surrender Probability';
+            
+            if (probability > 60) {
+                riskDiv.innerHTML = '<span class="status-badge status-high">HIGH RISK</span>';
+                recDiv.innerHTML = '<strong>⚠️ Immediate Action:</strong> Contact policyholder, offer premium flexibility, retention campaign';
+            } else if (probability > 35) {
+                riskDiv.innerHTML = '<span class="status-badge status-medium">MEDIUM RISK</span>';
+                recDiv.innerHTML = '<strong>📊 Action:</strong> Send reminder, schedule follow-up call';
+            } else {
+                riskDiv.innerHTML = '<span class="status-badge status-low">LOW RISK</span>';
+                recDiv.innerHTML = '<strong>✅ Status:</strong> Standard monitoring';
+            }
+        }
+        
+        // Predict Agent Growth
+        function predictAgentGrowth() {
+            const policies = parseFloat(document.getElementById('agent-policies').value);
+            const premiumLakh = parseFloat(document.getElementById('agent-premium').value);
+            const months = parseFloat(document.getElementById('agent-months').value);
+            const renewal = parseFloat(document.getElementById('agent-renewal').value);
+            
+            if (!policies || !premiumLakh || !months || !renewal) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            let score = 50;
+            
+            // Policies factor
+            score += (policies / 100) * 20;
+            
+            // Premium factor
+            score += (premiumLakh / 30) * 15;
+            
+            // Activity factor
+            score += (months / 12) * 20;
+            
+            // Renewal factor
+            score += (renewal / 100) * 15;
+            
+            score = Math.min(score, 98);
+            
+            const resultDiv = document.getElementById('agent-result');
+            const scoreDiv = document.getElementById('agent-score');
+            const levelDiv = document.getElementById('agent-level');
+            const recDiv = document.getElementById('agent-recommendation');
+            
+            resultDiv.style.display = 'block';
+            scoreDiv.textContent = score.toFixed(1) + '/100 Growth Score';
+            
+            if (score > 85) {
+                levelDiv.innerHTML = '<span class="status-badge status-high">🌟 HIGH POTENTIAL</span>';
+                recDiv.innerHTML = '<strong>🎯 Priority:</strong> Top retention candidate, offer incentives, fast-track promotion, mentorship program';
+            } else if (score > 65) {
+                levelDiv.innerHTML = '<span class="status-badge status-medium">📈 MEDIUM POTENTIAL</span>';
+                recDiv.innerHTML = '<strong>📊 Action:</strong> Additional training, target support, regular monitoring';
+            } else {
+                levelDiv.innerHTML = '<span class="status-badge status-low">⚡ DEVELOPMENT NEEDED</span>';
+                recDiv.innerHTML = '<strong>🔧 Focus:</strong> Intensive training, performance improvement plan, close supervision';
+            }
+        }
+        
+        // Predict Renewal
+        function predictRenewal() {
+            const years = parseFloat(document.getElementById('renewal-years').value);
+            const delay = parseFloat(document.getElementById('renewal-delay').value);
+            const hasClaim = document.getElementById('renewal-claim').value;
+            const type = document.getElementById('renewal-type').value;
+            
+            if (!years || !delay) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            let probability = 75;
+            
+            // Years factor (loyalty)
+            probability += years * 2;
+            
+            // Delay factor
+            if (delay > 30) probability -= 25;
+            else if (delay > 15) probability -= 15;
+            else if (delay > 7) probability -= 8;
+            else probability += 5;
+            
+            // Claim history
+            if (hasClaim === 'yes') probability += 5;
+            
+            // Policy type
+            const typeFactors = {'endowment': 1.05, 'term': 0.95, 'whole-life': 1.08, 'money-back': 1.02};
+            probability *= typeFactors[type] || 1;
+            
+            probability = Math.min(Math.max(probability, 40), 98);
+            
+            const resultDiv = document.getElementById('renewal-result');
+            const probDiv = document.getElementById('renewal-probability');
+            const levelDiv = document.getElementById('renewal-level');
+            const recDiv = document.getElementById('renewal-recommendation');
+            
+            resultDiv.style.display = 'block';
+            probDiv.textContent = probability.toFixed(1) + '% Renewal Probability';
+            
+            if (probability > 85) {
+                levelDiv.innerHTML = '<span class="status-badge status-active">✅ HIGH LIKELIHOOD</span>';
+                recDiv.innerHTML = '<strong>🎉 Great:</strong> Send thank-you message, offer loyalty benefits';
+            } else if (probability > 65) {
+                levelDiv.innerHTML = '<span class="status-badge status-medium">📊 MODERATE</span>';
+                recDiv.innerHTML = '<strong>📱 Action:</strong> Early reminder (30 days), personal follow-up';
+            } else {
+                levelDiv.innerHTML = '<span class="status-badge status-high">⚠️ AT RISK</span>';
+                recDiv.innerHTML = '<strong>🚨 Urgent:</strong> Immediate contact, offer payment plan, retention specialist intervention';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+xdg-open /home/dipak/directory/dashboard/demo-production.html
