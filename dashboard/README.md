@@ -2,7 +2,7 @@
 
 ## 🏔️ Business-Ready Insurance Dashboard for Single Company
 
-A **production-grade** analytics dashboard built for a life insurance company operating in Nepal. This system provides **real-time business intelligence** with clear data sourcing, BI tool integration readiness, and AI/ML pipeline architecture.
+A **production-grade** analytics dashboard built for a life insurance company operating in Nepal. This system provides **real-time business intelligence** with clear data sourcing and BI tool integration readiness.
 
 ---
 
@@ -21,10 +21,9 @@ A **production-grade** analytics dashboard built for a life insurance company op
 - **Year-over-year growth tracking**
 - **Risk exposure monitoring**
 
-### For Future AI/ML
-- **Predictive analytics ready** - 7 ML use cases pre-engineered
-- **Feature engineering views** - Labeled datasets ready for training
-- **Scalable architecture** - Supports model deployment pipeline
+### For Future Enhancements
+- **Predictive analytics ready** - Architecture supports future ML integration
+- **Scalable architecture** - Ready for advanced features
 
 ---
 
@@ -110,15 +109,6 @@ React Dashboard (Visualization - 7 Pages)
 9. `v_agent_status_tracking` - Workforce health
 10. `v_bi_export_standard` - Unified BI export format
 
-### AI/ML Feature Views (Ready for Training)
-1. `v_ai_claim_prediction_features` - Claim probability
-2. `v_ai_surrender_prediction_features` - Surrender/churn prediction
-3. `v_ai_agent_business_prediction` - Agent performance forecasting
-4. `v_ai_renewal_prediction_features` - Renewal time series
-5. `v_ai_premium_pattern_features` - Collection pattern clustering
-6. `v_ai_agent_growth_potential` - Agent propensity scoring
-7. `v_ai_investment_analysis` - Investment optimization
-
 ---
 
 ## 🔌 Power BI / Tableau Integration
@@ -173,7 +163,6 @@ mysql -u root -p < backend/database/schema.sql
 
 ```bash
 mysql -u root -p < backend/database/views.sql
-mysql -u root -p < backend/database/ai_features.sql
 ```
 
 ### Step 3: Seed Mock Data
@@ -219,7 +208,6 @@ dashboard/
 │   ├── database/
 │   │   ├── schema.sql               ✅ Raw table definitions
 │   │   ├── views.sql                ✅ BI-ready views (10 views)
-│   │   ├── ai_features.sql          ✅ ML feature views (7 views)
 │   │   └── seed.js                  ✅ Mock data generator
 │   ├── src/
 │   │   ├── config/
@@ -279,18 +267,6 @@ dashboard/
 | 7 | Death Claim Ratio & Comparison | Claims Management | `v_death_claim_analysis` | `/api/claims/death-claim-ratio` |
 | 8 | Maturing Policies & Investment FD | Investments | `v_maturing_policies_investment` | `/api/policies/maturing`, `/api/investments/fd-summary` |
 
-### ✅ All 7 AI Requirements (Architecture Ready)
-
-| # | AI Feature | ML Task | Feature View | Status |
-|---|-----------|---------|--------------|--------|
-| 1 | Claim Probability | Binary Classification | `v_ai_claim_prediction_features` | ✅ Ready |
-| 2 | Surrender Probability | Churn Prediction | `v_ai_surrender_prediction_features` | ✅ Ready |
-| 3 | Agent Business Prediction | Regression | `v_ai_agent_business_prediction` | ✅ Ready |
-| 4 | Renewal Prediction | Time Series | `v_ai_renewal_prediction_features` | ✅ Ready |
-| 5 | Agent Growth Potential | Clustering | `v_ai_agent_growth_potential` | ✅ Ready |
-| 6 | Premium Collection Patterns | Clustering + Forecasting | `v_ai_premium_pattern_features` | ✅ Ready |
-| 7 | Investment Analysis | Optimization | `v_ai_investment_analysis` | ✅ Ready |
-
 ---
 
 ## 🛠️ Technology Stack
@@ -314,13 +290,6 @@ dashboard/
 - Power BI Desktop (Direct MySQL connection)
 - Tableau (MySQL connector)
 - Excel (ODBC connection)
-
-### AI/ML Stack (Future)
-- Python 3.9+
-- scikit-learn (Classification, Regression)
-- pandas (Data manipulation)
-- TensorFlow/PyTorch (Deep learning)
-- MLflow (Model tracking)
 
 ---
 
@@ -460,12 +429,6 @@ SELECT * FROM v_agent_performance_metrics LIMIT 10;
 4. **Cash flow forecasting** (renewals + maturities)
 5. **Data-driven decisions** (not gut feelings)
 
-### AI Advantage
-- **Predictive vs Reactive**: Anticipate problems before they happen
-- **Retention focus**: Save 5x more by retaining vs acquiring
-- **Agent optimization**: Identify hidden stars early
-- **Investment planning**: Match FD maturities with payout obligations
-
 ---
 
 ## 🚀 Next Steps After POC
@@ -482,13 +445,7 @@ SELECT * FROM v_agent_performance_metrics LIMIT 10;
 3. Schedule automated exports
 4. Train business users
 
-### Phase 3: AI/ML Implementation
-1. Export feature views to Python
-2. Train ML models on historical data
-3. Deploy prediction APIs
-4. Integrate predictions into dashboard
-
-### Phase 4: Advanced Features
+### Phase 3: Advanced Features
 1. Real-time alerts (email/SMS)
 2. Mobile app
 3. Automated regulatory reports (Beema Samiti)

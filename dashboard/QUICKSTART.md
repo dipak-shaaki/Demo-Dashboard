@@ -197,7 +197,6 @@ npm run preview  # Preview production build
 - **Fiscal Year**: Nepal FY runs from mid-July to mid-July
 - **Currency**: All amounts in NPR (Nepalese Rupee)
 - **Mock Data**: All data is randomly generated for demonstration
-- **AI Features**: Architecture is ready for future AI/ML integration
 
 ---
 
