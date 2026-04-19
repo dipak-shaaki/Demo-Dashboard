@@ -32,7 +32,7 @@ export const agentsAPI = {
 
 // Renewals API
 export const renewalsAPI = {
-  getYearlyComparison: () => api.get('/renewals/yearly-comparison'),
+  getYearlyComparison: (fiscalYear) => api.get('/renewals/yearly-comparison', { params: { fiscalYear } }),
 };
 
 // Policies API

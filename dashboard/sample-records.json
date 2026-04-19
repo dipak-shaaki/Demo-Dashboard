@@ -1,0 +1,288 @@
+{
+  "metadata": {
+    "generatedAt": "2026-04-17",
+    "description": "Detailed sample records for testing and demonstrations"
+  },
+  "samplePolicies": [
+    {
+      "policyNumber": "POL-BAG-2024-001",
+      "policyholder": "Ram Sharma",
+      "province": "Bagmati",
+      "planType": "Endowment",
+      "sumAssured": 1000000,
+      "annualPremium": 85000,
+      "issueDate": "2024-01-15",
+      "maturityDate": "2034-01-15",
+      "status": "Active",
+      "hasInvestment": true,
+      "investmentAmount": 500000,
+      "investmentType": "FD"
+    },
+    {
+      "policyNumber": "POL-LUM-2024-045",
+      "policyholder": "Sita Poudel",
+      "province": "Lumbini",
+      "planType": "Whole Life",
+      "sumAssured": 750000,
+      "annualPremium": 62000,
+      "issueDate": "2024-03-20",
+      "maturityDate": "2044-03-20",
+      "status": "Active",
+      "hasInvestment": true,
+      "investmentAmount": 350000,
+      "investmentType": "FD"
+    },
+    {
+      "policyNumber": "POL-KOS-2024-089",
+      "policyholder": "Hari Thapa",
+      "province": "Koshi",
+      "planType": "Term Life",
+      "sumAssured": 600000,
+      "annualPremium": 18000,
+      "issueDate": "2024-05-10",
+      "maturityDate": "2044-05-10",
+      "status": "Active",
+      "hasInvestment": false,
+      "investmentAmount": 0,
+      "investmentType": null
+    },
+    {
+      "policyNumber": "POL-BAG-2024-112",
+      "policyholder": "Gita Maharjan",
+      "province": "Bagmati",
+      "planType": "Money Back",
+      "sumAssured": 1200000,
+      "annualPremium": 95000,
+      "issueDate": "2024-07-05",
+      "maturityDate": "2039-07-05",
+      "status": "Active",
+      "hasInvestment": true,
+      "investmentAmount": 600000,
+      "investmentType": "FD"
+    },
+    {
+      "policyNumber": "POL-MAD-2024-156",
+      "policyholder": "Rajesh Yadav",
+      "province": "Madhesh",
+      "planType": "Endowment",
+      "sumAssured": 500000,
+      "annualPremium": 42000,
+      "issueDate": "2024-09-12",
+      "maturityDate": "2034-09-12",
+      "status": "Active",
+      "hasInvestment": true,
+      "investmentAmount": 220000,
+      "investmentType": "FD"
+    },
+    {
+      "policyNumber": "POL-GAN-2023-203",
+      "policyholder": "Bikash Gurung",
+      "province": "Gandaki",
+      "planType": "Endowment",
+      "sumAssured": 800000,
+      "annualPremium": 68000,
+      "issueDate": "2023-11-20",
+      "maturityDate": "2033-11-20",
+      "status": "Lapsed",
+      "hasInvestment": false,
+      "investmentAmount": 0,
+      "investmentType": null,
+      "lapseDate": "2025-12-01",
+      "lapseReason": "Non-payment of premium"
+    },
+    {
+      "policyNumber": "POL-SUD-2023-287",
+      "policyholder": "Kamala Bhatta",
+      "province": "Sudurpaschim",
+      "planType": "Whole Life",
+      "sumAssured": 450000,
+      "annualPremium": 38000,
+      "issueDate": "2023-06-15",
+      "maturityDate": "2043-06-15",
+      "status": "Surrendered",
+      "hasInvestment": false,
+      "investmentAmount": 0,
+      "investmentType": null,
+      "surrenderDate": "2025-08-20",
+      "surrenderAmount": 85000
+    },
+    {
+      "policyNumber": "POL-KAR-2024-342",
+      "policyholder": "Dhan Bahadur KC",
+      "province": "Karnali",
+      "planType": "Term Life",
+      "sumAssured": 350000,
+      "annualPremium": 12000,
+      "issueDate": "2024-02-10",
+      "maturityDate": "2044-02-10",
+      "status": "Active",
+      "hasInvestment": false,
+      "investmentAmount": 0,
+      "investmentType": null
+    }
+  ],
+  "sampleClaims": [
+    {
+      "claimId": "CLM-2025-001",
+      "policyNumber": "POL-BAG-2020-045",
+      "policyholder": "Ramesh Paudel",
+      "province": "Bagmati",
+      "claimType": "Death",
+      "claimAmount": 1500000,
+      "claimDate": "2025-02-15",
+      "settlementDate": "2025-03-20",
+      "status": "Settled",
+      "daysToSettle": 33
+    },
+    {
+      "claimId": "CLM-2025-002",
+      "policyNumber": "POL-LUM-2019-112",
+      "policyholder": "Laxmi Thapa",
+      "province": "Lumbini",
+      "claimType": "Maturity",
+      "claimAmount": 850000,
+      "claimDate": "2025-03-10",
+      "settlementDate": "2025-03-15",
+      "status": "Settled",
+      "daysToSettle": 5
+    },
+    {
+      "claimId": "CLM-2025-003",
+      "policyNumber": "POL-KOS-2021-089",
+      "policyholder": "Sanjay Rai",
+      "province": "Koshi",
+      "claimType": "Death",
+      "claimAmount": 900000,
+      "claimDate": "2025-04-05",
+      "settlementDate": null,
+      "status": "Pending",
+      "daysToSettle": null
+    }
+  ],
+  "sampleRenewals": [
+    {
+      "renewalId": "REN-2025-001",
+      "policyNumber": "POL-BAG-2020-001",
+      "policyholder": "Deepak Shrestha",
+      "province": "Bagmati",
+      "dueDate": "2025-01-15",
+      "amount": 75000,
+      "paymentDate": "2025-01-12",
+      "status": "Paid",
+      "paymentMode": "Online"
+    },
+    {
+      "renewalId": "REN-2025-002",
+      "policyNumber": "POL-LUM-2020-045",
+      "policyholder": "Anita Kumari",
+      "province": "Lumbini",
+      "dueDate": "2025-02-20",
+      "amount": 58000,
+      "paymentDate": null,
+      "status": "Pending",
+      "paymentMode": null,
+      "daysOverdue": 45
+    },
+    {
+      "renewalId": "REN-2025-003",
+      "policyNumber": "POL-KOS-2020-089",
+      "policyholder": "Binod Magar",
+      "province": "Koshi",
+      "dueDate": "2024-12-10",
+      "amount": 42000,
+      "paymentDate": null,
+      "status": "Lapsed",
+      "paymentMode": null,
+      "daysOverdue": 120,
+      "lapseDate": "2025-02-10"
+    }
+  ],
+  "sampleAgents": [
+    {
+      "agentId": "AGT-BAG-001",
+      "agentName": "Prakash Hamal",
+      "province": "Bagmati",
+      "joiningDate": "2020-05-15",
+      "status": "Active",
+      "totalPolicies": 125,
+      "totalPremium": 1250000,
+      "currentFYPerformance": 88.5,
+      "tier": "Gold"
+    },
+    {
+      "agentId": "AGT-LUM-045",
+      "agentName": "Sunita Chaudhary",
+      "province": "Lumbini",
+      "joiningDate": "2021-08-20",
+      "status": "Active",
+      "totalPolicies": 92,
+      "totalPremium": 850000,
+      "currentFYPerformance": 78.2,
+      "tier": "Silver"
+    },
+    {
+      "agentId": "AGT-KOS-089",
+      "agentName": "Rajan Limbu",
+      "province": "Koshi",
+      "joiningDate": "2022-01-10",
+      "status": "Active",
+      "totalPolicies": 68,
+      "totalPremium": 520000,
+      "currentFYPerformance": 72.8,
+      "tier": "Bronze"
+    },
+    {
+      "agentId": "AGT-MAD-156",
+      "agentName": "Saroj Mandal",
+      "province": "Madhesh",
+      "joiningDate": "2023-03-05",
+      "status": "Inactive",
+      "totalPolicies": 24,
+      "totalPremium": 180000,
+      "currentFYPerformance": 45.2,
+      "tier": "N/A",
+      "inactiveReason": "No sales in last 6 months"
+    }
+  ],
+  "sampleInvestments": [
+    {
+      "investmentId": "INV-FD-001",
+      "policyNumber": "POL-BAG-2024-001",
+      "policyholder": "Ram Sharma",
+      "province": "Bagmati",
+      "investmentType": "FD",
+      "amount": 500000,
+      "interestRate": 8.2,
+      "investmentDate": "2024-01-20",
+      "maturityDate": "2026-05-15",
+      "status": "Active",
+      "maturityAmount": 582000
+    },
+    {
+      "investmentId": "INV-FD-045",
+      "policyNumber": "POL-LUM-2024-045",
+      "policyholder": "Sita Poudel",
+      "province": "Lumbini",
+      "investmentType": "FD",
+      "amount": 350000,
+      "interestRate": 8.5,
+      "investmentDate": "2024-03-25",
+      "maturityDate": "2026-06-20",
+      "status": "Active",
+      "maturityAmount": 407750
+    },
+    {
+      "investmentId": "INV-INS-089",
+      "policyNumber": "POL-KOS-2024-089",
+      "policyholder": "Hari Thapa",
+      "province": "Koshi",
+      "investmentType": "Insurance",
+      "amount": 150000,
+      "interestRate": null,
+      "investmentDate": "2024-05-10",
+      "maturityDate": "2044-05-10",
+      "status": "Active",
+      "maturityAmount": null
+    }
+  ]
+}

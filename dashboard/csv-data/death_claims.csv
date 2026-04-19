@@ -1,0 +1,9 @@
+province,total_claims,claim_amount,death_claim_rate_percent,avg_claim,trend
+Bagmati,88,48000000,0.6,545455,+0.1%
+Lumbini,58,32000000,0.8,551724,+0.2%
+Koshi,38,21000000,1.1,552632,+0.3%
+Madhesh,28,15000000,1.3,535714,+0.4%
+Gandaki,18,9800000,0.9,544444,0.0%
+Sudurpaschim,12,6500000,1.4,541667,+0.5%
+Karnali,8,4200000,1.6,525000,+0.6%
+Janakpur,5,2800000,1.8,560000,+0.7%

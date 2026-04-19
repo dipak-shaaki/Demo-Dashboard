@@ -5,22 +5,23 @@ import { renewalsAPI } from '../services/api';
 
 const RenewalTracking = () => {
   const [renewalData, setRenewalData] = useState([]);
+  const [selectedYear, setSelectedYear] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await renewalsAPI.getYearlyComparison();
-        setRenewalData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [selectedYear]);
+
+  const fetchData = async () => {
+    try {
+      const response = await renewalsAPI.getYearlyComparison(selectedYear || null);
+      setRenewalData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formatCurrency = (value) => {
     return `NPR ${(value / 100000).toFixed(2)} Lakh`;
@@ -32,6 +33,18 @@ const RenewalTracking = () => {
     <div>
       <div className="header">
         <h2>Renewal Tracking</h2>
+        <div className="header-controls">
+          <select
+            className="form-control"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            <option value="">All Years</option>
+            <option value="2081/82">FY 2081/82</option>
+            <option value="2080/81">FY 2080/81</option>
+            <option value="2079/80">FY 2079/80</option>
+          </select>
+        </div>
       </div>
 
       <DataChart

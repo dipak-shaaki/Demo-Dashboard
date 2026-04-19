@@ -476,13 +476,3 @@ SELECT * FROM v_agent_performance_metrics LIMIT 10;
 - Plan deployment strategy
 
 ---
-
-## 📄 License
-
-Built for **single insurance company** use.  
-Proof of Concept - Production Ready Architecture.
-
----
-
-**Built with ❤️ for Nepal's Insurance Industry**  
-**Ready for POC Presentation** 🏔️

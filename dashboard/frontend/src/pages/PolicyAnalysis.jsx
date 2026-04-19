@@ -107,12 +107,16 @@ const PolicyAnalysis = () => {
             { key: 'policy_number', title: 'Policy Number' },
             { key: 'policyholder_name', title: 'Policyholder' },
             { key: 'province', title: 'Province' },
-            { key: 'maturity_date', title: 'Maturity Date' },
-            { key: 'sum_assured', title: 'Sum Assured', render: (val) => formatCurrency(val) },
+            { key: 'policy_maturity_date', title: 'Policy Maturity Date' },
+            { key: 'policy_sum_assured', title: 'Sum Assured', render: (val) => formatCurrency(val) },
+            { key: 'investment_type', title: 'Investment Type', render: (val) => val || 'N/A' },
+            { key: 'investment_amount', title: 'Investment Amount', render: (val) => val ? formatCurrency(val) : 'N/A' },
+            { key: 'interest_rate', title: 'Interest Rate', render: (val) => val ? `${val.toFixed(2)}%` : 'N/A' },
+            { key: 'investment_maturity_date', title: 'Investment Maturity', render: (val) => val || 'N/A' },
             { key: 'status', title: 'Status' },
           ]}
           data={maturingPolicies}
-          title="Maturing Policies (Next 12 Months)"
+          title="Maturing Policies with Investment Details (Next 12 Months)"
         />
       )}
     </div>

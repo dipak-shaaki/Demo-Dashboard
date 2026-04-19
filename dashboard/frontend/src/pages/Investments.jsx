@@ -6,13 +6,19 @@ import { investmentsAPI } from '../services/api';
 
 const Investments = () => {
   const [investmentData, setInvestmentData] = useState(null);
+  const [fdData, setFdData] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await investmentsAPI.getFDSummary();
-        setInvestmentData(response.data);
+        const [investmentRes, fdRes] = await Promise.all([
+          investmentsAPI.getByProvince(),
+          investmentsAPI.getFDSummary(),
+        ]);
+        setInvestmentData(investmentRes.data);
+        setFdData(fdRes.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -24,7 +30,10 @@ const Investments = () => {
   }, []);
 
   const formatCurrency = (value) => {
-    return `NPR ${(value / 10000000).toFixed(2)} Crore`;
+    if (value >= 10000000) {
+      return `NPR ${(value / 10000000).toFixed(2)} Crore`;
+    }
+    return `NPR ${(value / 100000).toFixed(2)} Lakh`;
   };
 
   if (loading) return <div className="loading">Loading...</div>;
@@ -35,7 +44,19 @@ const Investments = () => {
         <h2>Investments & FD</h2>
       </div>
 
-      {investmentData && (
+      <div className="tabs">
+        <button className={`tab ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}>
+          Investment Overview
+        </button>
+        <button className={`tab ${activeTab === 'fd' ? 'active' : ''}`} onClick={() => setActiveTab('fd')}>
+          FD Details
+        </button>
+        <button className={`tab ${activeTab === 'maturity' ? 'active' : ''}`} onClick={() => setActiveTab('maturity')}>
+          FD Maturity Schedule
+        </button>
+      </div>
+
+      {activeTab === 'overview' && investmentData && (
         <div>
           <div className="kpi-grid" style={{ marginBottom: '20px' }}>
             <KPICard
@@ -70,30 +91,6 @@ const Investments = () => {
             />
           </div>
 
-          <div className="card" style={{ marginTop: '20px' }}>
-            <div className="card-title">Investment Summary by Type</div>
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Investment Type</th>
-                  <th>Total Amount</th>
-                  <th>Count</th>
-                  <th>Average Interest Rate</th>
-                </tr>
-              </thead>
-              <tbody>
-                {investmentData.byType.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.investment_type}</td>
-                    <td>{formatCurrency(item.total_amount)}</td>
-                    <td>{item.count}</td>
-                    <td>{item.avg_rate.toFixed(2)}%</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
           <DataTable
             columns={[
               { key: 'province', title: 'Province' },
@@ -104,6 +101,65 @@ const Investments = () => {
             title="Province-wise Investment Details"
           />
         </div>
+      )}
+
+      {activeTab === 'fd' && fdData && (
+        <div>
+          <div className="kpi-grid" style={{ marginBottom: '20px' }}>
+            <KPICard
+              title="Total FD Investment"
+              value={formatCurrency(fdData.fdTotal.total)}
+              variant="gold"
+            />
+            <KPICard
+              title="Total FD Count"
+              value={fdData.fdTotal.count}
+              variant="default"
+            />
+            <KPICard
+              title="Average Interest Rate"
+              value={`${fdData.fdTotal.avg_rate.toFixed(2)}%`}
+              variant="accent"
+            />
+          </div>
+
+          <DataChart
+            type="bar"
+            data={fdData.fdByProvince}
+            xKey="province"
+            yKeys={['total_fd_amount']}
+            title="FD Investment by Province"
+            height={400}
+          />
+
+          <DataTable
+            columns={[
+              { key: 'province', title: 'Province' },
+              { key: 'total_fd_amount', title: 'Total FD Amount', render: (val) => formatCurrency(val) },
+              { key: 'fd_count', title: 'FD Count' },
+              { key: 'avg_interest_rate', title: 'Avg Interest Rate', render: (val) => `${val.toFixed(2)}%` },
+            ]}
+            data={fdData.fdByProvince}
+            title="Province-wise FD Details"
+          />
+        </div>
+      )}
+
+      {activeTab === 'maturity' && fdData && (
+        <DataTable
+          columns={[
+            { key: 'policy_number', title: 'Policy Number' },
+            { key: 'policyholder_name', title: 'Policyholder' },
+            { key: 'province', title: 'Province' },
+            { key: 'fd_amount', title: 'FD Amount', render: (val) => formatCurrency(val) },
+            { key: 'interest_rate', title: 'Interest Rate', render: (val) => `${val.toFixed(2)}%` },
+            { key: 'maturity_date', title: 'Maturity Date' },
+            { key: 'days_to_maturity', title: 'Days to Maturity' },
+            { key: 'policy_sum_assured', title: 'Policy Sum Assured', render: (val) => formatCurrency(val) },
+          ]}
+          data={fdData.fdMaturitySchedule}
+          title="FD Maturity Schedule (Next 12 Months)"
+        />
       )}
     </div>
   );

@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const AnalyticsService = require('../services/analyticsService');
 
-// FD summary
+// FD summary with maturity schedule
 router.get('/fd-summary', async (req, res) => {
   try {
-    const data = await AnalyticsService.getInvestmentSummary();
+    const data = await AnalyticsService.getFDSummary();
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });

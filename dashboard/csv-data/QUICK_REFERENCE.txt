@@ -1,0 +1,235 @@
+QUICK REFERENCE - CSV FILES GUIDE
+===================================
+
+📊 DASHBOARD PAGE → CSV FILE MAPPING
+=====================================
+
+1. EXECUTIVE PAGE
+   → premium_collection.csv (Target vs Actual)
+   → monthly_premium_trend.csv (Seasonal patterns)
+   → agent_performance.csv (Agent stats)
+
+2. PREMIUM ANALYSIS PAGE
+   → premium_collection.csv (Detailed breakdown)
+   → new_business.csv (New sales)
+
+3. SALES & AGENCY PAGE
+   → new_business.csv (Policy counts)
+   → agent_performance.csv (Agent metrics)
+
+4. AGENT PERFORMANCE PAGE
+   → agent_performance.csv (Performance by province)
+
+5. RENEWAL & LAPSE PAGE ⭐ NEW
+   → renewals_yearly.csv (Renewal tracking)
+   → policy_lapse.csv (Lapse analysis)
+
+6. RISK MANAGEMENT PAGE
+   → policy_lapse.csv (Lapse risk)
+   → policy_loan.csv (Loan portfolio)
+   → renewals_yearly.csv (Renewal risk)
+
+7. CLAIMS & SURRENDER PAGE
+   → surrender_analysis.csv (Surrender data)
+   → death_claims.csv (Death claims)
+
+8. INVESTMENT & MATURITY PAGE
+   → investment_summary.csv (FD portfolio)
+   → fd_maturity_schedule.csv (Upcoming maturities)
+   → maturing_policies.csv (Policy maturities)
+
+9. AI PREDICTIONS PAGE
+   → All files (for ML training)
+   → Especially: renewals_yearly.csv, policy_lapse.csv, surrender_analysis.csv
+
+
+📈 CHART TYPES FOR EACH FILE
+==============================
+
+premium_collection.csv
+  ✓ Bar chart: Province-wise target vs actual
+  ✓ Line chart: 3-year achievement trend
+  ✓ Gauge: Overall achievement %
+
+new_business.csv
+  ✓ Bar chart: Policies by province
+  ✓ Line chart: Growth trend
+  ✓ Stacked bar: Premium contribution
+
+renewals_yearly.csv
+  ✓ Stacked bar: Paid vs Pending vs Lapsed
+  ✓ Line chart: Renewal rate trend
+  ✓ KPI card: Current renewal rate
+
+policy_lapse.csv
+  ✓ Bar chart: Lapse rate (color-coded by risk)
+  ✓ Table: Risk levels
+  ✓ KPI: Total premium lost
+
+policy_loan.csv
+  ✓ Bar chart: Loan amounts
+  ✓ Gauge: Average NPL ratio
+  ✓ Table: Province details
+
+surrender_analysis.csv
+  ✓ Bar chart: Surrender rate
+  ✓ Line chart: Trend over time
+  ✓ KPI: Total surrender amount
+
+death_claims.csv
+  ✓ Bar chart: Claims by province
+  ✓ Table: Claim details
+  ✓ KPI: Total claims paid
+
+investment_summary.csv
+  ✓ Bar chart: FD by province
+  ✓ Pie chart: Distribution
+  ✓ KPI: Overall ROI
+
+fd_maturity_schedule.csv
+  ✓ Table: Sorted by maturity date
+  ✓ Timeline: Maturity distribution
+  ✓ Alerts: 30/60/90 day warnings
+
+maturing_policies.csv
+  ✓ Bar chart: Maturities by province
+  ✓ KPI: Total obligation
+  ✓ Timeline: 30/90 day breakdown
+
+agent_performance.csv
+  ✓ Bar chart: Active vs Inactive
+  ✓ Line chart: Agent count trend
+  ✓ Table: Rankings
+
+monthly_premium_trend.csv
+  ✓ Area chart: Monthly pattern
+  ✓ Bar chart: Month comparison
+  ✓ Insights: Peak/low months
+
+
+💾 HOW TO IMPORT TO DATABASE
+==============================
+
+MySQL Example:
+--------------
+LOAD DATA INFILE 'premium_collection.csv'
+INTO TABLE premium_collection
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+PostgreSQL Example:
+-------------------
+COPY premium_collection FROM 'premium_collection.csv'
+DELIMITER ',' CSV HEADER;
+
+
+🐍 HOW TO USE IN PYTHON
+=========================
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data
+premium = pd.read_csv('premium_collection.csv')
+renewals = pd.read_csv('renewals_yearly.csv')
+
+# Analysis
+total_collection = premium['actual_amount'].sum()
+avg_renewal_rate = renewals['renewal_rate_percent'].mean()
+
+# Chart
+premium.groupby('province')['actual_amount'].sum().plot(kind='bar')
+plt.show()
+
+
+📱 HOW TO USE IN JAVASCRIPT
+=============================
+
+// Load CSV
+fetch('premium_collection.csv')
+  .then(response => response.text())
+  .then(csv => {
+    // Parse CSV to JSON
+    const lines = csv.split('\n');
+    const headers = lines[0].split(',');
+    const data = lines.slice(1).map(line => {
+      const values = line.split(',');
+      return headers.reduce((obj, header, i) => {
+        obj[header] = values[i];
+        return obj;
+      }, {});
+    });
+    
+    // Use in Chart.js
+    createChart(data);
+  });
+
+
+🔗 DATA RELATIONSHIPS
+=======================
+
+Revenue Analysis:
+  premium_collection + new_business + renewals_yearly
+  = Total revenue breakdown
+
+Risk Assessment:
+  policy_lapse + surrender_analysis + death_claims + policy_loan
+  = Complete risk profile
+
+Investment Management:
+  investment_summary + fd_maturity_schedule + maturing_policies
+  = Investment portfolio tracking
+
+Performance Tracking:
+  agent_performance + new_business + premium_collection
+  = Sales effectiveness
+
+AI/ML Training:
+  All files combined
+  = Predictive models
+
+
+📋 FILE SUMMARY
+================
+
+File Name                      | Rows | Columns | Primary Use
+-------------------------------|------|---------|---------------------------
+premium_collection.csv         |  21  |    6    | Target tracking
+new_business.csv               |  21  |    4    | Sales tracking
+renewals_yearly.csv            |  21  |    8    | Renewal analysis
+policy_lapse.csv               |   7  |    7    | Lapse risk
+policy_loan.csv                |   7  |    5    | Loan portfolio
+surrender_analysis.csv         |   7  |    6    | Surrender tracking
+death_claims.csv               |   7  |    6    | Claims analysis
+investment_summary.csv         |   7  |    5    | FD portfolio
+fd_maturity_schedule.csv       |  10  |    8    | Maturity tracking
+maturing_policies.csv          |   7  |    6    | Policy maturities
+agent_performance.csv          |   7  |    6    | Agent metrics
+monthly_premium_trend.csv      |  12  |    2    | Seasonal patterns
+
+Total: 12 files, 134 data records
+
+
+💡 TIPS
+=======
+
+1. All amounts are in NPR (Nepali Rupees)
+2. 1 Lakh = 100,000 | 1 Crore = 10,000,000
+3. Nepal Fiscal Year: Mid-July to Mid-July
+4. Data covers 7 provinces × 3 fiscal years (where applicable)
+5. Replace mock data with real data for production
+6. Use README_DATA_USAGE.txt for detailed column descriptions
+7. All CSV files are in: /dashboard/csv-data/ folder
+
+
+🚀 QUICK START
+===============
+
+1. Open any CSV in Excel/Google Sheets
+2. Create pivot tables for analysis
+3. Generate charts and dashboards
+4. Import to database for live tracking
+5. Connect to dashboard frontend
+6. Add AI/ML models for predictions

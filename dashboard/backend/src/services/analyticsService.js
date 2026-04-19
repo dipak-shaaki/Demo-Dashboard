@@ -122,9 +122,9 @@ class AnalyticsService {
   }
 
   // Renewal yearly comparison by province
-  static async getRenewalYearlyComparison() {
-    const [results] = await pool.query(
-      `SELECT p.name as province, 
+  static async getRenewalYearlyComparison(fiscalYear = null) {
+    let query = `
+      SELECT p.name as province, 
               r.fiscal_year,
               SUM(r.amount) as total_renewal,
               COUNT(CASE WHEN r.status = 'paid' THEN 1 END) as paid_count,
@@ -132,10 +132,18 @@ class AnalyticsService {
               COUNT(CASE WHEN r.status = 'lapsed' THEN 1 END) as lapsed_count
        FROM renewals r
        JOIN policies pol ON r.policy_id = pol.id
-       JOIN provinces p ON pol.province_id = p.id
-       GROUP BY p.id, p.name, r.fiscal_year
-       ORDER BY r.fiscal_year DESC, total_renewal DESC`
-    );
+       JOIN provinces p ON pol.province_id = p.id`;
+    
+    const params = [];
+    
+    if (fiscalYear) {
+      query += ' WHERE r.fiscal_year = ?';
+      params.push(fiscalYear);
+    }
+    
+    query += ' GROUP BY p.id, p.name, r.fiscal_year ORDER BY r.fiscal_year DESC, total_renewal DESC';
+    
+    const [results] = await pool.query(query, params);
     return results;
   }
 
@@ -238,6 +246,73 @@ class AnalyticsService {
       byType,
       byProvince
     };
+  }
+
+  // FD-specific summary
+  static async getFDSummary() {
+    const [fdTotal] = await pool.query(
+      'SELECT SUM(amount) as total, COUNT(*) as count, AVG(interest_rate) as avg_rate FROM investments WHERE investment_type = "FD"'
+    );
+    
+    const [fdByProvince] = await pool.query(
+      `SELECT p.name as province, 
+              SUM(i.amount) as total_fd_amount, 
+              COUNT(*) as fd_count,
+              AVG(i.interest_rate) as avg_interest_rate
+       FROM investments i
+       JOIN policies pol ON i.policy_id = pol.id
+       JOIN provinces p ON pol.province_id = p.id
+       WHERE i.investment_type = 'FD'
+       GROUP BY p.id, p.name
+       ORDER BY total_fd_amount DESC`
+    );
+    
+    const [fdMaturitySchedule] = await pool.query(
+      `SELECT pol.policy_number,
+              pol.policyholder_name,
+              p.name as province,
+              i.amount as fd_amount,
+              i.interest_rate,
+              i.maturity_date,
+              DATEDIFF(i.maturity_date, CURDATE()) as days_to_maturity,
+              pol.sum_assured as policy_sum_assured
+       FROM investments i
+       JOIN policies pol ON i.policy_id = pol.id
+       JOIN provinces p ON pol.province_id = p.id
+       WHERE i.investment_type = 'FD'
+       AND i.status = 'active'
+       AND i.maturity_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 12 MONTH)
+       ORDER BY i.maturity_date ASC`
+    );
+    
+    return {
+      fdTotal: fdTotal[0],
+      fdByProvince,
+      fdMaturitySchedule
+    };
+  }
+
+  // Maturing policies with investment details
+  static async getMaturingPoliciesWithInvestments() {
+    const [results] = await pool.query(
+      `SELECT pol.policy_number, 
+              pol.policyholder_name, 
+              p.name as province, 
+              pol.maturity_date as policy_maturity_date, 
+              pol.sum_assured as policy_sum_assured, 
+              pol.status,
+              i.investment_type,
+              i.amount as investment_amount,
+              i.interest_rate,
+              i.maturity_date as investment_maturity_date
+       FROM policies pol
+       JOIN provinces p ON pol.province_id = p.id
+       LEFT JOIN investments i ON pol.id = i.policy_id AND i.status = 'active'
+       WHERE pol.maturity_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 12 MONTH)
+       AND pol.status = 'active'
+       ORDER BY pol.maturity_date ASC`
+    );
+    return results;
   }
 }
 

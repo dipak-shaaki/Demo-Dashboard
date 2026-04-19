@@ -22,10 +22,10 @@ router.get('/surrender', async (req, res) => {
   }
 });
 
-// Maturing policies
+// Maturing policies with investment details
 router.get('/maturing', async (req, res) => {
   try {
-    const data = await AnalyticsService.getMaturingPolicies();
+    const data = await AnalyticsService.getMaturingPoliciesWithInvestments();
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });

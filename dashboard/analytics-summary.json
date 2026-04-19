@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "generatedAt": "2026-04-17",
+    "description": "Key performance metrics and analytics summary"
+  },
+  "executiveSummary": {
+    "totalPremiumCollected": 1401000000,
+    "totalNewPolicies": 12850,
+    "totalRenewalRate": 89.8,
+    "totalAgents": 2122,
+    "activeAgents": 1856,
+    "totalClaims": 485000000,
+    "totalInvestments": 850000000,
+    "fiscalYear": "2081/82"
+  },
+  "kpiMetrics": {
+    "premiumCollection": {
+      "target": 1805000000,
+      "actual": 1401000000,
+      "achievement": 77.6,
+      "yearOverYearGrowth": 16.8,
+      "status": "On Track"
+    },
+    "newBusiness": {
+      "target": 15000,
+      "actual": 12850,
+      "achievement": 85.7,
+      "yearOverYearGrowth": 15.2,
+      "status": "Good"
+    },
+    "renewals": {
+      "totalDue": 10090,
+      "paid": 9064,
+      "pending": 606,
+      "lapsed": 354,
+      "renewalRate": 89.8,
+      "yearOverYearImprovement": 2.1,
+      "status": "Excellent"
+    },
+    "agentPerformance": {
+      "totalAgents": 2122,
+      "active": 1856,
+      "activeRate": 87.4,
+      "avgPerformance": 76.8,
+      "topPerformers": 485,
+      "status": "Good"
+    }
+  },
+  "riskMetrics": {
+    "policyLapse": {
+      "totalLapsed": 2038,
+      "totalPremiumLost": 144000000,
+      "avgLapseRate": 10.6,
+      "highRiskProvinces": ["Karnali", "Sudurpaschim", "Madhesh"],
+      "status": "Needs Attention"
+    },
+    "policyLoan": {
+      "totalLoanAmount": 255000000,
+      "activeLoans": 1495,
+      "avgNPLRatio": 3.4,
+      "highRiskProvinces": ["Karnali", "Sudurpaschim"],
+      "status": "Acceptable"
+    },
+    "surrender": {
+      "totalSurrender": 1673,
+      "totalSurrenderAmount": 121200000,
+      "avgSurrenderRate": 6.4,
+      "trend": "Stable",
+      "status": "Acceptable"
+    },
+    "deathClaims": {
+      "totalClaims": 242,
+      "totalClaimAmount": 136500000,
+      "avgClaimRate": 1.1,
+      "trend": "Normal",
+      "status": "Normal"
+    }
+  },
+  "investmentMetrics": {
+    "totalInvestment": 850000000,
+    "fdInvestment": 620000000,
+    "insuranceInvestment": 230000000,
+    "totalReturn": 95200000,
+    "overallROI": 11.2,
+    "fdAvgInterestRate": 8.5,
+    "maturityNext12Months": {
+      "fdCount": 286,
+      "totalMaturityAmount": 142000000,
+      "status": "Manageable"
+    },
+    "status": "Healthy"
+  },
+  "maturingPolicies": {
+    "totalMaturing": 1429,
+    "totalMaturityAmount": 248500000,
+    "next30Days": 120,
+    "next90Days": 379,
+    "next12Months": 1429,
+    "withInvestments": 719,
+    "status": "Requires Planning"
+  },
+  "provinceRankings": {
+    "byPremiumCollection": [
+      {"rank": 1, "province": "Bagmati", "amount": 485000000, "achievement": 86.6},
+      {"rank": 2, "province": "Lumbini", "amount": 330000000, "achievement": 80.5},
+      {"rank": 3, "province": "Koshi", "amount": 210000000, "achievement": 73.7},
+      {"rank": 4, "province": "Madhesh", "amount": 150000000, "achievement": 71.4},
+      {"rank": 5, "province": "Gandaki", "amount": 110000000, "achievement": 71.0},
+      {"rank": 6, "province": "Sudurpaschim", "amount": 70000000, "achievement": 63.6},
+      {"rank": 7, "province": "Karnali", "amount": 46000000, "achievement": 61.3}
+    ],
+    "byRenewalRate": [
+      {"rank": 1, "province": "Bagmati", "rate": 90.5},
+      {"rank": 2, "province": "Lumbini", "rate": 90.5},
+      {"rank": 3, "province": "Madhesh", "rate": 89.4},
+      {"rank": 4, "province": "Gandaki", "rate": 89.3},
+      {"rank": 5, "province": "Sudurpaschim", "rate": 88.5},
+      {"rank": 6, "province": "Koshi", "rate": 89.0},
+      {"rank": 7, "province": "Karnali", "rate": 88.0}
+    ],
+    "byAgentPerformance": [
+      {"rank": 1, "province": "Bagmati", "avgPerformance": 82.5},
+      {"rank": 2, "province": "Lumbini", "avgPerformance": 79.2},
+      {"rank": 3, "province": "Koshi", "avgPerformance": 75.8},
+      {"rank": 4, "province": "Gandaki", "avgPerformance": 74.6},
+      {"rank": 5, "province": "Madhesh", "avgPerformance": 73.4},
+      {"rank": 6, "province": "Sudurpaschim", "avgPerformance": 72.8},
+      {"rank": 7, "province": "Karnali", "avgPerformance": 71.2}
+    ],
+    "byLowestLapseRate": [
+      {"rank": 1, "province": "Gandaki", "rate": 9.8},
+      {"rank": 2, "province": "Bagmati", "rate": 8.2},
+      {"rank": 3, "province": "Lumbini", "rate": 9.1},
+      {"rank": 4, "province": "Koshi", "rate": 10.3},
+      {"rank": 5, "province": "Madhesh", "rate": 11.2},
+      {"rank": 6, "province": "Sudurpaschim", "rate": 12.4},
+      {"rank": 7, "province": "Karnali", "rate": 13.1}
+    ]
+  },
+  "aiInsights": {
+    "predictions": {
+      "nextFYPremiumForecast": 1620000000,
+      "confidenceLevel": 85.2,
+      "growthProjection": 15.6,
+      "renewalRateForecast": 91.2,
+      "lapseRiskPolicies": 456,
+      "surrenderRiskPolicies": 285
+    },
+    "recommendations": [
+      "Focus on Karnali and Sudurpaschim provinces to reduce lapse rates",
+      "Implement retention programs for policies aged 2-4 years",
+      "Increase agent training in Madhesh and Koshi regions",
+      "Optimize FD investment portfolio for better ROI",
+      "Strengthen renewal reminder system for Bagmati and Lumbini"
+    ],
+    "anomalies": [
+      "Unusual spike in claims in Koshi province during Q3",
+      "Declining agent productivity in Gandaki despite stable numbers",
+      "Higher than expected surrender rate in Karnali province"
+    ]
+  },
+  "monthlyTrends": {
+    "premiumCollection": [
+      {"month": "Shrawan", "amount": 85000000},
+      {"month": "Bhadra", "amount": 98000000},
+      {"month": "Ashwin", "amount": 125000000},
+      {"month": "Kartik", "amount": 132000000},
+      {"month": "Mangsir", "amount": 145000000},
+      {"month": "Poush", "amount": 118000000},
+      {"month": "Magh", "amount": 122000000},
+      {"month": "Falgun", "amount": 135000000},
+      {"month": "Chaitra", "amount": 142000000},
+      {"month": "Baishakh", "amount": 108000000},
+      {"month": "Jestha", "amount": 102000000},
+      {"month": "Ashadh", "amount": 91000000}
+    ],
+    "peakMonths": ["Mangsir", "Chaitra", "Kartik"],
+    "lowMonths": ["Shrawan", "Ashadh", "Jestha"],
+    "seasonality": "Higher collection in winter months (Mangsir-Chaitra), lower in monsoon (Shrawan-Bhadra)"
+  }
+}

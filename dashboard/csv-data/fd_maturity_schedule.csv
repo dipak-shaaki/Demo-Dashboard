@@ -1,0 +1,11 @@
+policy_number,policyholder,province,fd_amount,interest_rate,maturity_date,days_to_maturity,policy_sum_assured
+POL-BAG-2024-001,Ram Sharma,Bagmati,500000,8.2,2026-05-15,28,1000000
+POL-LUM-2024-045,Sita Poudel,Lumbini,350000,8.5,2026-06-20,64,750000
+POL-KOS-2024-089,Hari Thapa,Koshi,280000,8.8,2026-07-10,84,600000
+POL-BAG-2024-112,Gita Maharjan,Bagmati,600000,8.3,2026-08-25,130,1200000
+POL-MAD-2024-156,Rajesh Yadav,Madhesh,220000,9.1,2026-09-30,166,500000
+POL-GAN-2024-203,Bikash Gurung,Gandaki,180000,8.6,2026-10-15,181,400000
+POL-SUD-2024-287,Kamala Bhatta,Sudurpaschim,150000,9.3,2026-11-20,217,350000
+POL-KAR-2024-342,Dhan Bahadur KC,Karnali,120000,9.5,2026-12-10,237,300000
+POL-BAG-2024-401,Suresh Shrestha,Bagmati,450000,8.4,2027-01-15,273,900000
+POL-LUM-2024-456,Anita Kumari,Lumbini,320000,8.7,2027-02-20,309,700000

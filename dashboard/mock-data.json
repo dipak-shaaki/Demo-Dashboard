@@ -1,0 +1,194 @@
+{
+  "metadata": {
+    "generatedAt": "2026-04-17",
+    "fiscalYears": ["2079/80", "2080/81", "2081/82"],
+    "provinces": [
+      {"id": 1, "name": "Bagmati"},
+      {"id": 2, "name": "Lumbini"},
+      {"id": 3, "name": "Koshi"},
+      {"id": 4, "name": "Madhesh"},
+      {"id": 5, "name": "Gandaki"},
+      {"id": 6, "name": "Sudurpaschim"},
+      {"id": 7, "name": "Karnali"}
+    ],
+    "currency": "NPR (रू)"
+  },
+  "premiumCollection": {
+    "yearlyByProvince": [
+      {"province": "Bagmati", "fiscalYear": "2079/80", "target": 450000000, "actual": 380000000, "achievement": 84.4, "growth": 12.5},
+      {"province": "Bagmati", "fiscalYear": "2080/81", "target": 500000000, "actual": 425000000, "achievement": 85.0, "growth": 11.8},
+      {"province": "Bagmati", "fiscalYear": "2081/82", "target": 560000000, "actual": 485000000, "achievement": 86.6, "growth": 14.1},
+      {"province": "Lumbini", "fiscalYear": "2079/80", "target": 320000000, "actual": 250000000, "achievement": 78.1, "growth": 14.2},
+      {"province": "Lumbini", "fiscalYear": "2080/81", "target": 360000000, "actual": 285000000, "achievement": 79.2, "growth": 14.0},
+      {"province": "Lumbini", "fiscalYear": "2081/82", "target": 410000000, "actual": 330000000, "achievement": 80.5, "growth": 15.8},
+      {"province": "Koshi", "fiscalYear": "2079/80", "target": 210000000, "actual": 155000000, "achievement": 73.8, "growth": 15.6},
+      {"province": "Koshi", "fiscalYear": "2080/81", "target": 245000000, "actual": 180000000, "achievement": 73.5, "growth": 16.1},
+      {"province": "Koshi", "fiscalYear": "2081/82", "target": 285000000, "actual": 210000000, "achievement": 73.7, "growth": 16.7},
+      {"province": "Madhesh", "fiscalYear": "2079/80", "target": 150000000, "actual": 105000000, "achievement": 70.0, "growth": 16.8},
+      {"province": "Madhesh", "fiscalYear": "2080/81", "target": 175000000, "actual": 125000000, "achievement": 71.4, "growth": 19.0},
+      {"province": "Madhesh", "fiscalYear": "2081/82", "target": 210000000, "actual": 150000000, "achievement": 71.4, "growth": 20.0},
+      {"province": "Gandaki", "fiscalYear": "2079/80", "target": 110000000, "actual": 75000000, "achievement": 68.2, "growth": 17.4},
+      {"province": "Gandaki", "fiscalYear": "2080/81", "target": 130000000, "actual": 90000000, "achievement": 69.2, "growth": 20.0},
+      {"province": "Gandaki", "fiscalYear": "2081/82", "target": 155000000, "actual": 110000000, "achievement": 71.0, "growth": 22.2},
+      {"province": "Sudurpaschim", "fiscalYear": "2079/80", "target": 75000000, "actual": 48000000, "achievement": 64.0, "growth": 18.2},
+      {"province": "Sudurpaschim", "fiscalYear": "2080/81", "target": 90000000, "actual": 58000000, "achievement": 64.4, "growth": 20.8},
+      {"province": "Sudurpaschim", "fiscalYear": "2081/82", "target": 110000000, "actual": 70000000, "achievement": 63.6, "growth": 20.7},
+      {"province": "Karnali", "fiscalYear": "2079/80", "target": 50000000, "actual": 30000000, "achievement": 60.0, "growth": 20.0},
+      {"province": "Karnali", "fiscalYear": "2080/81", "target": 60000000, "actual": 37000000, "achievement": 61.7, "growth": 23.3},
+      {"province": "Karnali", "fiscalYear": "2081/82", "target": 75000000, "actual": 46000000, "achievement": 61.3, "growth": 24.3}
+    ],
+    "totalByYear": {
+      "2079/80": {"target": 1365000000, "actual": 1043000000, "achievement": 76.4},
+      "2080/81": {"target": 1570000000, "actual": 1200000000, "achievement": 76.4},
+      "2081/82": {"target": 1805000000, "actual": 1401000000, "achievement": 77.6}
+    }
+  },
+  "newBusiness": {
+    "yearlyByProvince": [
+      {"province": "Bagmati", "fiscalYear": "2079/80", "policies": 3250, "premium": 125000000},
+      {"province": "Bagmati", "fiscalYear": "2080/81", "policies": 3680, "premium": 142000000},
+      {"province": "Bagmati", "fiscalYear": "2081/82", "policies": 4120, "premium": 162000000},
+      {"province": "Lumbini", "fiscalYear": "2079/80", "policies": 2180, "premium": 78000000},
+      {"province": "Lumbini", "fiscalYear": "2080/81", "policies": 2480, "premium": 90000000},
+      {"province": "Lumbini", "fiscalYear": "2081/82", "policies": 2780, "premium": 102000000},
+      {"province": "Koshi", "fiscalYear": "2079/80", "policies": 1450, "premium": 48000000},
+      {"province": "Koshi", "fiscalYear": "2080/81", "policies": 1680, "premium": 56000000},
+      {"province": "Koshi", "fiscalYear": "2081/82", "policies": 1920, "premium": 65000000},
+      {"province": "Madhesh", "fiscalYear": "2079/80", "policies": 1080, "premium": 34000000},
+      {"province": "Madhesh", "fiscalYear": "2080/81", "policies": 1260, "premium": 40000000},
+      {"province": "Madhesh", "fiscalYear": "2081/82", "policies": 1450, "premium": 46000000},
+      {"province": "Gandaki", "fiscalYear": "2079/80", "policies": 880, "premium": 26000000},
+      {"province": "Gandaki", "fiscalYear": "2080/81", "policies": 1020, "premium": 31000000},
+      {"province": "Gandaki", "fiscalYear": "2081/82", "policies": 1180, "premium": 36000000},
+      {"province": "Sudurpaschim", "fiscalYear": "2079/80", "policies": 620, "premium": 17000000},
+      {"province": "Sudurpaschim", "fiscalYear": "2080/81", "policies": 720, "premium": 20000000},
+      {"province": "Sudurpaschim", "fiscalYear": "2081/82", "policies": 830, "premium": 24000000},
+      {"province": "Karnali", "fiscalYear": "2079/80", "policies": 420, "premium": 11000000},
+      {"province": "Karnali", "fiscalYear": "2080/81", "policies": 490, "premium": 13000000},
+      {"province": "Karnali", "fiscalYear": "2081/82", "policies": 570, "premium": 16000000}
+    ]
+  },
+  "renewals": {
+    "yearlyByProvince": [
+      {"province": "Bagmati", "fiscalYear": "2079/80", "total": 2450, "paid": 2156, "pending": 198, "lapsed": 96, "rate": 88.0, "amount": 185000000},
+      {"province": "Bagmati", "fiscalYear": "2080/81", "total": 2680, "paid": 2398, "pending": 186, "lapsed": 96, "rate": 89.5, "amount": 208000000},
+      {"province": "Bagmati", "fiscalYear": "2081/82", "total": 2920, "paid": 2642, "pending": 178, "lapsed": 100, "rate": 90.5, "amount": 232000000},
+      {"province": "Lumbini", "fiscalYear": "2079/80", "total": 1680, "paid": 1478, "pending": 132, "lapsed": 70, "rate": 88.0, "amount": 124000000},
+      {"province": "Lumbini", "fiscalYear": "2080/81", "total": 1820, "paid": 1628, "pending": 124, "lapsed": 68, "rate": 89.5, "amount": 138000000},
+      {"province": "Lumbini", "fiscalYear": "2081/82", "total": 1980, "paid": 1792, "pending": 118, "lapsed": 70, "rate": 90.5, "amount": 152000000},
+      {"province": "Koshi", "fiscalYear": "2079/80", "total": 1120, "paid": 974, "pending": 98, "lapsed": 48, "rate": 87.0, "amount": 82000000},
+      {"province": "Koshi", "fiscalYear": "2080/81", "total": 1240, "paid": 1092, "pending": 96, "lapsed": 52, "rate": 88.1, "amount": 94000000},
+      {"province": "Koshi", "fiscalYear": "2081/82", "total": 1360, "paid": 1210, "pending": 94, "lapsed": 56, "rate": 89.0, "amount": 106000000},
+      {"province": "Madhesh", "fiscalYear": "2079/80", "total": 820, "paid": 712, "pending": 72, "lapsed": 36, "rate": 86.8, "amount": 58000000},
+      {"province": "Madhesh", "fiscalYear": "2080/81", "total": 920, "paid": 812, "pending": 68, "lapsed": 40, "rate": 88.3, "amount": 66000000},
+      {"province": "Madhesh", "fiscalYear": "2081/82", "total": 1020, "paid": 912, "pending": 64, "lapsed": 44, "rate": 89.4, "amount": 74000000},
+      {"province": "Gandaki", "fiscalYear": "2079/80", "total": 680, "paid": 592, "pending": 58, "lapsed": 30, "rate": 87.1, "amount": 48000000},
+      {"province": "Gandaki", "fiscalYear": "2080/81", "total": 740, "paid": 652, "pending": 54, "lapsed": 34, "rate": 88.1, "amount": 54000000},
+      {"province": "Gandaki", "fiscalYear": "2081/82", "total": 820, "paid": 732, "pending": 52, "lapsed": 36, "rate": 89.3, "amount": 60000000},
+      {"province": "Sudurpaschim", "fiscalYear": "2079/80", "total": 480, "paid": 412, "pending": 44, "lapsed": 24, "rate": 85.8, "amount": 34000000},
+      {"province": "Sudurpaschim", "fiscalYear": "2080/81", "total": 540, "paid": 472, "pending": 42, "lapsed": 26, "rate": 87.4, "amount": 39000000},
+      {"province": "Sudurpaschim", "fiscalYear": "2081/82", "total": 590, "paid": 522, "pending": 40, "lapsed": 28, "rate": 88.5, "amount": 43000000},
+      {"province": "Karnali", "fiscalYear": "2079/80", "total": 320, "paid": 272, "pending": 32, "lapsed": 16, "rate": 85.0, "amount": 22000000},
+      {"province": "Karnali", "fiscalYear": "2080/81", "total": 360, "paid": 312, "pending": 30, "lapsed": 18, "rate": 86.7, "amount": 26000000},
+      {"province": "Karnali", "fiscalYear": "2081/82", "total": 400, "paid": 352, "pending": 28, "lapsed": 20, "rate": 88.0, "amount": 29000000}
+    ]
+  },
+  "policyLapse": {
+    "byProvince": [
+      {"province": "Bagmati", "lapsedPolicies": 682, "premiumLost": 48000000, "lapseRate": 8.2, "avgPolicyAge": 4.2, "trend": "+1.2%", "riskLevel": "Medium"},
+      {"province": "Lumbini", "lapsedPolicies": 456, "premiumLost": 32000000, "lapseRate": 9.1, "avgPolicyAge": 3.8, "trend": "+1.5%", "riskLevel": "Medium"},
+      {"province": "Koshi", "lapsedPolicies": 298, "premiumLost": 21000000, "lapseRate": 10.3, "avgPolicyAge": 3.5, "trend": "+2.1%", "riskLevel": "High"},
+      {"province": "Madhesh", "lapsedPolicies": 218, "premiumLost": 15000000, "lapseRate": 11.2, "avgPolicyAge": 3.2, "trend": "+1.8%", "riskLevel": "High"},
+      {"province": "Gandaki", "lapsedPolicies": 168, "premiumLost": 12000000, "lapseRate": 9.8, "avgPolicyAge": 3.9, "trend": "-0.3%", "riskLevel": "Medium"},
+      {"province": "Sudurpaschim", "lapsedPolicies": 124, "premiumLost": 9000000, "lapseRate": 12.4, "avgPolicyAge": 2.8, "trend": "+2.4%", "riskLevel": "High"},
+      {"province": "Karnali", "lapsedPolicies": 98, "premiumLost": 7000000, "lapseRate": 13.1, "avgPolicyAge": 2.5, "trend": "+2.8%", "riskLevel": "Critical"}
+    ]
+  },
+  "policyLoan": {
+    "byProvince": [
+      {"province": "Bagmati", "totalLoanAmount": 85000000, "activeLoans": 485, "avgInterestRate": 8.5, "nplRatio": 2.1},
+      {"province": "Lumbini", "totalLoanAmount": 58000000, "activeLoans": 342, "avgInterestRate": 8.8, "nplRatio": 2.8},
+      {"province": "Koshi", "totalLoanAmount": 38000000, "activeLoans": 228, "avgInterestRate": 9.2, "nplRatio": 3.2},
+      {"province": "Madhesh", "totalLoanAmount": 28000000, "activeLoans": 168, "avgInterestRate": 9.5, "nplRatio": 3.8},
+      {"province": "Gandaki", "totalLoanAmount": 22000000, "activeLoans": 132, "avgInterestRate": 8.9, "nplRatio": 2.5},
+      {"province": "Sudurpaschim", "totalLoanAmount": 15000000, "activeLoans": 88, "avgInterestRate": 9.8, "nplRatio": 4.2},
+      {"province": "Karnali", "totalLoanAmount": 9000000, "activeLoans": 54, "avgInterestRate": 10.2, "nplRatio": 5.1}
+    ]
+  },
+  "surrender": {
+    "byProvince": [
+      {"province": "Bagmati", "totalSurrender": 582, "surrenderAmount": 42000000, "surrenderRate": 4.2, "avgPayout": 72165, "trend": "-0.5%"},
+      {"province": "Lumbini", "totalSurrender": 398, "surrenderAmount": 28000000, "surrenderRate": 5.1, "avgPayout": 70352, "trend": "+0.2%"},
+      {"province": "Koshi", "totalSurrender": 268, "surrenderAmount": 18000000, "surrenderRate": 6.3, "avgPayout": 67164, "trend": "+0.8%"},
+      {"province": "Madhesh", "totalSurrender": 195, "surrenderAmount": 13000000, "surrenderRate": 7.2, "avgPayout": 66667, "trend": "+1.1%"},
+      {"province": "Gandaki", "totalSurrender": 142, "surrenderAmount": 9500000, "surrenderRate": 5.8, "avgPayout": 66901, "trend": "-0.2%"},
+      {"province": "Sudurpaschim", "totalSurrender": 98, "surrenderAmount": 6200000, "surrenderRate": 7.8, "avgPayout": 63265, "trend": "+1.4%"},
+      {"province": "Karnali", "totalSurrender": 72, "surrenderAmount": 4500000, "surrenderRate": 8.5, "avgPayout": 62500, "trend": "+1.8%"}
+    ]
+  },
+  "deathClaims": {
+    "byProvince": [
+      {"province": "Bagmati", "totalClaims": 88, "claimAmount": 48000000, "deathClaimRate": 0.6, "avgClaim": 545455, "trend": "+0.1%"},
+      {"province": "Lumbini", "totalClaims": 58, "claimAmount": 32000000, "deathClaimRate": 0.8, "avgClaim": 551724, "trend": "+0.2%"},
+      {"province": "Koshi", "totalClaims": 38, "claimAmount": 21000000, "deathClaimRate": 1.1, "avgClaim": 552632, "trend": "+0.3%"},
+      {"province": "Madhesh", "totalClaims": 28, "claimAmount": 15000000, "deathClaimRate": 1.3, "avgClaim": 535714, "trend": "+0.4%"},
+      {"province": "Gandaki", "totalClaims": 18, "claimAmount": 9800000, "deathClaimRate": 0.9, "avgClaim": 544444, "trend": "0.0%"},
+      {"province": "Sudurpaschim", "totalClaims": 12, "claimAmount": 6500000, "deathClaimRate": 1.4, "avgClaim": 541667, "trend": "+0.5%"},
+      {"province": "Karnali", "totalClaims": 8, "claimAmount": 4200000, "deathClaimRate": 1.6, "avgClaim": 525000, "trend": "+0.6%"}
+    ]
+  },
+  "investments": {
+    "summary": {
+      "totalInvestment": 850000000,
+      "totalReturn": 95200000,
+      "overallROI": 11.2,
+      "fdTotal": 620000000,
+      "fdCount": 1250,
+      "fdAvgRate": 8.5
+    },
+    "fdByProvince": [
+      {"province": "Bagmati", "totalFdAmount": 215000000, "fdCount": 432, "avgInterestRate": 8.2, "maturityNext12Months": 98},
+      {"province": "Lumbini", "totalFdAmount": 148000000, "fdCount": 296, "avgInterestRate": 8.5, "maturityNext12Months": 68},
+      {"province": "Koshi", "totalFdAmount": 98000000, "fdCount": 196, "avgInterestRate": 8.8, "maturityNext12Months": 45},
+      {"province": "Madhesh", "totalFdAmount": 68000000, "fdCount": 136, "avgInterestRate": 9.1, "maturityNext12Months": 32},
+      {"province": "Gandaki", "totalFdAmount": 48000000, "fdCount": 96, "avgInterestRate": 8.6, "maturityNext12Months": 22},
+      {"province": "Sudurpaschim", "totalFdAmount": 28000000, "fdCount": 56, "avgInterestRate": 9.3, "maturityNext12Months": 13},
+      {"province": "Karnali", "totalFdAmount": 17000000, "fdCount": 34, "avgInterestRate": 9.5, "maturityNext12Months": 8}
+    ],
+    "fdMaturitySchedule": [
+      {"policyNumber": "POL-BAG-2024-001", "policyholder": "Ram Sharma", "province": "Bagmati", "fdAmount": 500000, "interestRate": 8.2, "maturityDate": "2026-05-15", "daysToMaturity": 28, "policySumAssured": 1000000},
+      {"policyNumber": "POL-LUM-2024-045", "policyholder": "Sita Poudel", "province": "Lumbini", "fdAmount": 350000, "interestRate": 8.5, "maturityDate": "2026-06-20", "daysToMaturity": 64, "policySumAssured": 750000},
+      {"policyNumber": "POL-KOS-2024-089", "policyholder": "Hari Thapa", "province": "Koshi", "fdAmount": 280000, "interestRate": 8.8, "maturityDate": "2026-07-10", "daysToMaturity": 84, "policySumAssured": 600000},
+      {"policyNumber": "POL-BAG-2024-112", "policyholder": "Gita Maharjan", "province": "Bagmati", "fdAmount": 600000, "interestRate": 8.3, "maturityDate": "2026-08-25", "daysToMaturity": 130, "policySumAssured": 1200000},
+      {"policyNumber": "POL-MAD-2024-156", "policyholder": "Rajesh Yadav", "province": "Madhesh", "fdAmount": 220000, "interestRate": 9.1, "maturityDate": "2026-09-30", "daysToMaturity": 166, "policySumAssured": 500000}
+    ]
+  },
+  "maturingPolicies": {
+    "byProvince": [
+      {"province": "Bagmati", "maturingPolicies": 485, "totalMaturityAmount": 85000000, "next30Days": 42, "next90Days": 128, "hasInvestment": 245},
+      {"province": "Lumbini", "maturingPolicies": 328, "totalMaturityAmount": 58000000, "next30Days": 28, "next90Days": 86, "hasInvestment": 165},
+      {"province": "Koshi", "maturingPolicies": 218, "totalMaturityAmount": 38000000, "next30Days": 18, "next90Days": 58, "hasInvestment": 110},
+      {"province": "Madhesh", "maturingPolicies": 156, "totalMaturityAmount": 27000000, "next30Days": 13, "next90Days": 42, "hasInvestment": 78},
+      {"province": "Gandaki", "maturingPolicies": 112, "totalMaturityAmount": 19000000, "next30Days": 9, "next90Days": 30, "hasInvestment": 56},
+      {"province": "Sudurpaschim", "maturingPolicies": 78, "totalMaturityAmount": 13000000, "next30Days": 6, "next90Days": 21, "hasInvestment": 39},
+      {"province": "Karnali", "maturingPolicies": 52, "totalMaturityAmount": 8500000, "next30Days": 4, "next90Days": 14, "hasInvestment": 26}
+    ]
+  },
+  "agents": {
+    "summary": {
+      "totalActive": 1856,
+      "totalInactive": 266,
+      "activeRate": 87.4,
+      "avgPerformance": 76.8
+    },
+    "byProvince": [
+      {"province": "Bagmati", "totalAgents": 585, "active": 528, "inactive": 57, "activeRate": 90.3, "avgPerformance": 82.5},
+      {"province": "Lumbini", "totalAgents": 398, "active": 352, "inactive": 46, "activeRate": 88.4, "avgPerformance": 79.2},
+      {"province": "Koshi", "totalAgents": 268, "active": 232, "inactive": 36, "activeRate": 86.6, "avgPerformance": 75.8},
+      {"province": "Madhesh", "totalAgents": 192, "active": 164, "inactive": 28, "activeRate": 85.4, "avgPerformance": 73.4},
+      {"province": "Gandaki", "totalAgents": 142, "active": 122, "inactive": 20, "activeRate": 85.9, "avgPerformance": 74.6},
+      {"province": "Sudurpaschim", "totalAgents": 98, "active": 84, "inactive": 14, "activeRate": 85.7, "avgPerformance": 72.8},
+      {"province": "Karnali", "totalAgents": 68, "active": 58, "inactive": 10, "activeRate": 85.3, "avgPerformance": 71.2}
+    ]
+  }
+}
